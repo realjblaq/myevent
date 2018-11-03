@@ -1,0 +1,7 @@
+ssh-keygen -o -t rsa -C "justicemarkwei@gmail.com" -b 4096
+
+
+https://gitlab.com/jblaq/myevent.git
+
+//event landing page
+https://www.gevme.com/blog/3-amazing-event-landing-page-examples-in-2016/ 
