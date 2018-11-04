@@ -1,6 +1,9 @@
 <?php 
 include('../authentication/session.php');
 // echo $_SESSION['uid'];exit();
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,13 +15,14 @@ include('../authentication/session.php');
 	<link rel="icon" type="image/png" href="../favicon.png"/>
 	<link rel="stylesheet" type="text/css" href="../fontawesome/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.min.css">
- 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+ 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
 
 </head>
-<body>
+<body style="padding-top: 60px; ">
 
 
-	<nav class="navbar navbar-inverse navbar-dark bg-dark flex-row ml-md-auto d-none d-md-flex">
+	<nav class="navbar navbar-dark bg-dark sticky">
 
 	  <a class="navbar-brand" href="#">
 	  	<img src="../img/logo min.png" width="35" height="35" alt="">
@@ -47,58 +51,9 @@ include('../authentication/session.php');
 
  <div class="container">
  		<div class="row">
-
-		    <div class="col-lg-4" style="margin-bottom: 40px">
-		    	<div class="card">
-				    <div class="card-img-top" alt="Card image cap" style="width: 100%;height:300px;background-image: url(../img/event1.jpg); background-size: contain;"></div>
-				    <div class="card-body" style="position: relative;">
-				      <h5 class="card-title">Event 1</h5>
-				      <div style="height: 120px;">
-				      	<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				      </div>
-				      
-				      <a href="#" class="btn btn-primary" style="position:absolute;bottom:0;margin-bottom: 15px;">Event Details</a>
-				    </div>
-				    <div class="card-footer">
-				      <small class="text-muted">Published on: 27-10-18</small>
-				    </div>
-				  </div>
-		    </div>
-
-		    <div class="col-lg-4" style="margin-bottom: 40px">
-		    	<div class="card">
-				    <div class="card-img-top" alt="Card image cap" style="width: 100%;height:300px;background-image: url(../img/event3.jpg); background-size: contain;"></div>
-				    <div class="card-body" style="position: relative;">
-				      <h5 class="card-title">Event 1</h5>
-				      <div style="height: 120px;">
-				      	<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				      </div>
-				      
-				      <a href="#" class="btn btn-primary" style="position:absolute;bottom:0;margin-bottom: 15px;">Event Details</a>
-				    </div>
-				    <div class="card-footer">
-				      <small class="text-muted">Published on: 27-10-18</small>
-				    </div>
-				  </div>
-		    </div>
-
-		    <div class="col-lg-4" style="margin-bottom: 40px">
-		    	<div class="card">
-				    <div class="card-img-top" alt="Card image cap" style="width: 100%;height:300px;background-image: url(../img/event2.jpg); background-size: contain;"></div>
-				    <div class="card-body" style="position: relative;">
-				      <h5 class="card-title">Event 1</h5>
-				      <div style="height: 120px;">
-				      	<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				      </div>
-				      
-				      <a href="#" class="btn btn-primary" style="position:absolute;bottom:0;margin-bottom: 15px;">Event Details</a>
-				    </div>
-				    <div class="card-footer">
-				      <small class="text-muted">Published on: 27-10-18</small>
-				    </div>
-				  </div>
-		    </div>
-
+ 			<?php 
+			echo $list;
+ 			?>
 	  	</div>
 	</div>	
 

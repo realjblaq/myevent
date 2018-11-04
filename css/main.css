@@ -24,3 +24,14 @@
 .authwhiterapper{
   padding: 20px 55px 33px 55px;
 }
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+
+}
+
+.iconcolors{
+  color: #8c99a7;
+}

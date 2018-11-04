@@ -1,3 +1,83 @@
+<?php 
+	include('config/connection.php');
+	session_start();
+
+	$eid =  '';
+	$uid =  '';
+	$ename =  '';
+	$about = '';
+	$image =  '';
+	$video =  '';
+	$location = '';
+	$date =  '';
+	$date_create =  '';
+	$ticket = '';
+	$event_creator = '';
+	$cdate = '';
+
+$event_sql=mysqli_query($conn, "SELECT * FROM events ORDER BY date_created DESC");
+$list = '';
+while ($erow = mysqli_fetch_assoc($event_sql)) {
+	$eid =  $erow['eid'];
+	$uid =  $erow['uid'];
+	$ename =  $erow['ename'];
+	$about = $erow['about'];
+	$image =  $erow['image'];
+	$video =  $erow['video'];
+	$location =  $erow['location'];
+	$date =  $erow['date'];
+	$date_create =  $erow['date_created'];
+	$ticket = "FREE";
+
+	if (date("y-m-d")==date("y-m-d", strtotime($date_create))) {
+		$cdate= "Today";
+		
+			} else{
+				$cdate= date("d-m-Y", strtotime($date_create));
+			}
+
+	if (date("y-m-d")==date("y-m-d", strtotime($date))) {
+		$date= "Today";
+		
+			} elseif (date("y-m-d")>date("y-m-d", strtotime($date))) {
+				$date= "Past";
+			} elseif (date("y-m-d")<date("y-m-d", strtotime($date))){
+
+				$date= date("d-m-Y", strtotime($date));
+			}
+	//2018-11-04 00:10:45
+
+	$name_sql=mysqli_query($conn, "SELECT fname, lname FROM users WHERE uid = '$uid'");
+	$nrow = mysqli_fetch_assoc($name_sql);
+	$event_creator = $nrow['fname']." ".$nrow['lname'];
+
+
+	$list .= '<div class="col-lg-4" style="margin-bottom: 15px;">
+		    	<div class="card">
+				    <img class="card-img-top" src="img/event1.jpg" alt="Card image cap" style="height: 350px;">
+					  <div class="card-body">
+				      <h5 class="card-title" style="margin-bottom: 0.1rem;">'.strtoupper($ename).'</h5>
+				      <p class="card-text" style="margin-bottom: 0rem;">'.ucfirst($about).'</p>
+				      <ul class="list-group list-group-flush">
+
+					    <li class="list-group-item" style="padding: -0.25rem 1.25rem;">
+					    	<i class="fa fa-map-marker-alt iconcolors"> </i> ' .ucwords($location).'
+					    	<br>
+					    	<i class="fa fa-calendar-alt iconcolors"></i> '.$date. '  <i class="fa fa-clock iconcolors"></i> '.date("h:iA",strtotime($date)).'
+					    </li>
+
+					    <li class="list-group-item"><i class="fa fa-ticket-alt iconcolors"></i> Ticket: <b> '.strtoupper($ticket).'</b></li>
+					  </ul> <br>
+				      <a href="#" class="btn btn-primary">Event Details</a>
+				    </div>
+				    <div class="card-footer">
+				      <small class="text-muted">Published: <b> '.$cdate.'</b>  By: <b>'.ucwords($event_creator).'</b></small>
+				    </div>
+				  </div>
+		    </div>';
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,14 +87,15 @@
 
 	<link rel="icon" type="image/png" href="favicon.png"/>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css">
- 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+ 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!-- 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
  -->
 	
 </head>
-<body>
-	<nav class="navbar navbar-dark bg-dark">
+<body style="padding-top: 80px;">
+	<nav class="navbar navbar-dark bg-dark sticky" id="navbar"">
 
 	  <a class="navbar-brand" href="#">
 	  	<img src="img/logo min.png" width="35" height="35" alt="">
@@ -33,71 +114,20 @@
    	 </form>
 
 	</nav> 
-	<!-- end of nav -->
-
-<!-- 	<i class="fa fa-user">JUSTICE</i>
- -->	
-<br>      	
+	<!-- end of nav --> 
 
  <div class="container">
 		<div class="row">
 
-		    <div class="col-lg-4" style="margin-bottom: 40px">
-		    	<div class="card">
-				    <div class="card-img-top" alt="Card image cap" style="width: 100%;height:300px;background-image: url(img/event1.jpg); background-size: contain;"></div>
-				    <div class="card-body" style="position: relative;">
-				      <h5 class="card-title">Event 1</h5>
-				      <div style="height: 120px;">
-				      	<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				      </div>
-				      
-				      <a href="#" class="btn btn-primary" style="position:absolute;bottom:0;margin-bottom: 15px;">Event Details</a>
-				    </div>
-				    <div class="card-footer">
-				      <small class="text-muted">Published on: 27-10-18</small>
-				    </div>
-				  </div>
-		    </div>
-
-		    <div class="col-lg-4" style="margin-bottom: 40px">
-		    	<div class="card">
-				    <div class="card-img-top" alt="Card image cap" style="width: 100%;height:300px;background-image: url(img/event3.jpg); background-size: contain;"></div>
-				    <div class="card-body" style="position: relative;">
-				      <h5 class="card-title">Event 1</h5>
-				      <div style="height: 120px;">
-				      	<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				      </div>
-				      
-				      <a href="#" class="btn btn-primary" style="position:absolute;bottom:0;margin-bottom: 15px;">Event Details</a>
-				    </div>
-				    <div class="card-footer">
-				      <small class="text-muted">Published on: 27-10-18</small>
-				    </div>
-				  </div>
-		    </div>
-
-		    <div class="col-lg-4" style="margin-bottom: 40px">
-		    	<div class="card">
-				    <div class="card-img-top" alt="Card image cap" style="width: 100%;height:300px;background-image: url(img/event2.jpg); background-size: contain;"></div>
-				    <div class="card-body" style="position: relative;">
-				      <h5 class="card-title">Event 1</h5>
-				      <div style="height: 120px;">
-				      	<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				      </div>
-				      
-				      <a href="#" class="btn btn-primary" style="position:absolute;bottom:0;margin-bottom: 15px;">Event Details</a>
-				    </div>
-				    <div class="card-footer">
-				      <small class="text-muted">Published on: 27-10-18</small>
-				    </div>
-				  </div>
-		    </div>
-
-	  	</div>
-
-	  	<button class="btn" id="pop">alert</button>
+		    <?php 
+		    	echo $list;
+		    ?>
+		    
+		    
 
 	</div>	
+</div>
+	
 
 	
 
@@ -106,6 +136,21 @@
  <script type="text/javascript" src="js/sweetalert.min.js"></script>
  <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+ <!-- <script>
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("navbar");
+var sticky = navbar.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+</script> -->
 
  <script type="text/javascript">
  	
