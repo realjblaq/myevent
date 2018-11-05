@@ -35,3 +35,29 @@
 .iconcolors{
   color: #8c99a7;
 }
+
+.bodypadding{
+  padding-top: 60px;
+}
+.btntoggle{
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+.btntoggle:hover {
+  background-color: #4f76c8;
+  border-color: #4f76c8;
+}
+.userediticon{
+  color: rgb(91, 96, 100);
+}
+.dashcontent{
+  background-color: #ffffff;
+}
+.myrow{
+  margin-left: 0px;
+  margin-right: 0px;
+  text-align: justify;
+}
+.linkactive{
+  background-color: white;
+}

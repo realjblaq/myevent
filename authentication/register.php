@@ -62,7 +62,7 @@ include 'registerproc.php';
 
 					<div class="input-group mb-3">
 					  <div class="input-group-prepend">
-					    <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+					    <span class="input-group-text" id="basic-addon1"><i class="fa fa-at"></i></span>
 					  </div>
 					  <input type="text" class="form-control" placeholder="Type a username." aria-label="Username" aria-describedby="basic-addon1" name="username" required>
 					</div>

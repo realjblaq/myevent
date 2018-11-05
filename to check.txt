@@ -5,3 +5,5 @@ https://gitlab.com/jblaq/myevent.git
 
 //event landing page
 https://www.gevme.com/blog/3-amazing-event-landing-page-examples-in-2016/ 
+
+col-sm-5
