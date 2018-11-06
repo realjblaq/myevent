@@ -4,6 +4,8 @@ session_start();
 
 $session_id=$_SESSION['uid'];
 
+
+//for user name
 $ses_sql=mysqli_query($conn, "SELECT username FROM users WHERE uid='$session_id'");
 $row = mysqli_fetch_assoc($ses_sql);
 $login_session =$row['username'];
@@ -17,11 +19,12 @@ header('Location: login.php'); // Redirecting To Home Page
 	$eid =  '';
 	$uid =  '';
 	$ename =  '';
+	$etype = '';
 	$about = '';
 	$image =  '';
 	$video =  '';
 	$location = '';
-	$date =  '';
+	$edate =  '';
 	$date_create =  '';
 	$ticket = '';
 	$event_creator = '';
@@ -32,14 +35,24 @@ $list = '';
 while ($erow = mysqli_fetch_assoc($event_sql)) {
 	$eid =  $erow['eid'];
 	$uid =  $erow['uid'];
+	$etype = $erow['etype'];
 	$ename =  $erow['ename'];
 	$about = $erow['about'];
 	$image =  $erow['image'];
 	$video =  $erow['video'];
 	$location =  $erow['location'];
-	$date =  $erow['date'];
+	$edate =  $erow['edate'];
 	$date_create =  $erow['date_created'];
-	$ticket = "FREE";
+	$ticket_qty = $erow['ticket_qty'];
+	$ticket_price = $erow['ticket_price'];
+
+	//check event type (free or paid)
+
+	if ($etype=='paid') {
+		$ticket = "GHS ".$ticket_price;
+	}else{
+		$ticket = "free";
+	}
 
 	if (date("y-m-d")==date("y-m-d", strtotime($date_create))) {
 		$cdate= "Today";
@@ -48,18 +61,19 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 				$cdate= date("d-m-Y", strtotime($date_create));
 			}
 
-	if (date("y-m-d")==date("y-m-d", strtotime($date))) {
-		$date= "Today";
+	if (date("y-m-d")==date("y-m-d", strtotime($edate))) {
+		$edate= "Today";
 		
-			} elseif (date("y-m-d")>date("y-m-d", strtotime($date))) {
-				$date= "Past";
-			} elseif (date("y-m-d")<date("y-m-d", strtotime($date))){
+			} elseif (date("y-m-d")>date("y-m-d", strtotime($edate))) {
+				$edate= "Past";
+			} elseif (date("y-m-d")<date("y-m-d", strtotime($edate))){
 
-				$date= date("d-m-Y", strtotime($date));
+				$edate= date("d-m-Y", strtotime($edate));
 			}
 
 	//2018-11-04 00:10:45
 
+	//user full name
 	$name_sql=mysqli_query($conn, "SELECT fname, lname FROM users WHERE uid = '$uid'");
 	$nrow = mysqli_fetch_assoc($name_sql);
 	$event_creator = $nrow['fname']." ".$nrow['lname'];
@@ -67,16 +81,16 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 
 	$list .= '<div class="col-lg-4" style="margin-bottom: 15px;">
 		    	<div class="card">
-				    <img class="card-img-top" src="../img/event1.jpg" alt="Card image cap" style="height: 350px;">
+				    <img class="card-img-top" src="../img/'.$image.'" alt="Card image cap" style="height: 350px;">
 					  <div class="card-body">
 				      <h5 class="card-title" style="margin-bottom: 0.1rem;">'.strtoupper($ename).'</h5>
-				      <p class="card-text" style="margin-bottom: 0rem;">'.ucfirst($about).'</p>
+				      <p class="card-text card_p">'.ucfirst($about).'</p>
 				      <ul class="list-group list-group-flush">
 
 					    <li class="list-group-item" style="padding: -0.25rem 1.25rem;">
 					    	<i class="fa fa-map-marker-alt iconcolors"> </i> ' .ucwords($location).'
 					    	<br>
-					    	<i class="fa fa-calendar-alt iconcolors"></i> '.$date. '  <i class="fa fa-clock iconcolors"></i> '.date("h:iA",strtotime($date)).'
+					    	<i class="fa fa-calendar-alt iconcolors"></i> '.$edate. '  <i class="fa fa-clock iconcolors"></i> '.date("h:iA",strtotime($edate)).'
 					    </li>
 
 					    <li class="list-group-item"><i class="fa fa-ticket-alt iconcolors"></i> Ticket: <b> '.strtoupper($ticket).'</b></li>

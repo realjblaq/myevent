@@ -61,3 +61,12 @@
 .linkactive{
   background-color: white;
 }
+.card_p{
+  margin-bottom: 0rem; 
+  height:50px; 
+  overflow: hidden;
+  text-overflow:ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

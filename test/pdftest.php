@@ -40,7 +40,7 @@ if (isset($_POST['upload'])) {
 			}
 
 				
-			}
+}
 
  
 ?>
@@ -57,7 +57,7 @@ if (isset($_POST['upload'])) {
 
 	<form action="pdftest.php" method="post" enctype="multipart/form-data">
 		<div class="form-group">
-					<input type="file"  name="file" size="50" />
+					<input class="form-control-file" type="file"  name="file" size="50" />
 
 		</div>
 
@@ -66,5 +66,6 @@ if (isset($_POST['upload'])) {
 		<input type="submit" value="Upload" name="upload" />
 
 	</form>
+
 </body>
 </html>

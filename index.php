@@ -20,14 +20,24 @@ $list = '';
 while ($erow = mysqli_fetch_assoc($event_sql)) {
 	$eid =  $erow['eid'];
 	$uid =  $erow['uid'];
+	$etype = $erow['etype'];
 	$ename =  $erow['ename'];
 	$about = $erow['about'];
 	$image =  $erow['image'];
 	$video =  $erow['video'];
 	$location =  $erow['location'];
-	$date =  $erow['date'];
+	$edate =  $erow['edate'];
 	$date_create =  $erow['date_created'];
-	$ticket = "FREE";
+	$ticket_qty = $erow['ticket_qty'];
+	$ticket_price = $erow['ticket_price'];
+
+	//check event type (free or paid)
+
+	if ($etype=='paid') {
+		$ticket = "GHS ".$ticket_price;
+	}else{
+		$ticket = "free";
+	}
 
 	if (date("y-m-d")==date("y-m-d", strtotime($date_create))) {
 		$cdate= "Today";
@@ -36,14 +46,14 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 				$cdate= date("d-m-Y", strtotime($date_create));
 			}
 
-	if (date("y-m-d")==date("y-m-d", strtotime($date))) {
-		$date= "Today";
+	if (date("y-m-d")==date("y-m-d", strtotime($edate))) {
+		$edate= "Today";
 		
-			} elseif (date("y-m-d")>date("y-m-d", strtotime($date))) {
-				$date= "Past";
-			} elseif (date("y-m-d")<date("y-m-d", strtotime($date))){
+			} elseif (date("y-m-d")>date("y-m-d", strtotime($edate))) {
+				$edate= "Past";
+			} elseif (date("y-m-d")<date("y-m-d", strtotime($edate))){
 
-				$date= date("d-m-Y", strtotime($date));
+				$edate= date("d-m-Y", strtotime($edate));
 			}
 	//2018-11-04 00:10:45
 
@@ -57,7 +67,7 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 				    <img class="card-img-top" src="img/event1.jpg" alt="Card image cap" style="height: 350px;">
 					  <div class="card-body">
 				      <h5 class="card-title" style="margin-bottom: 0.1rem;">'.strtoupper($ename).'</h5>
-				      <p class="card-text" style="margin-bottom: 0rem;">'.ucfirst($about).'</p>
+				      <p class="card-text card_p">'.ucfirst($about).'</p>
 				      <ul class="list-group list-group-flush">
 
 					    <li class="list-group-item" style="padding: -0.25rem 1.25rem;">
