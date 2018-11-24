@@ -16,7 +16,7 @@ include('../authentication/session.php');
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
 
 </head>
-<body class="bodypadding">
+<body class="bodypadding pagebody">
 
 
 	<?php include '../topnav.php'; ?>

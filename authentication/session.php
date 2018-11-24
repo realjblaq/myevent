@@ -4,7 +4,6 @@ session_start();
 
 $session_id=$_SESSION['uid'];
 
-
 //for user name
 $ses_sql=mysqli_query($conn, "SELECT username FROM users WHERE uid='$session_id'");
 $row = mysqli_fetch_assoc($ses_sql);
@@ -54,21 +53,21 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 		$ticket = "free";
 	}
 
-	if (date("y-m-d")==date("y-m-d", strtotime($date_create))) {
+	if (date("y/m/d")==date("y/m/d", strtotime($date_create))) {
 		$cdate= "Today";
 		
 			} else{
-				$cdate= date("d-m-Y", strtotime($date_create));
+				$cdate= date("d/m/Y", strtotime($date_create));
 			}
 
 	if (date("y-m-d")==date("y-m-d", strtotime($edate))) {
-		$edate= "Today";
+		$edate= "<span style='color:#079b07;'>Today</span>";
 		
 			} elseif (date("y-m-d")>date("y-m-d", strtotime($edate))) {
-				$edate= "Past";
+				$edate= "<span style='color:red;'>Past</span>";
 			} elseif (date("y-m-d")<date("y-m-d", strtotime($edate))){
 
-				$edate= date("d-m-Y", strtotime($edate));
+				$edate= date("d/m/Y", strtotime($edate));
 			}
 
 	//2018-11-04 00:10:45
@@ -81,7 +80,7 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 
 	$list .= '<div class="col-lg-4" style="margin-bottom: 15px;">
 		    	<div class="card">
-				    <img class="card-img-top" src="../img/'.$image.'" alt="Card image cap" style="height: 350px;">
+				    <img class="card-img-top" src="../media/images/'.$image.'" alt="Card image cap" style="height: 350px;">
 					  <div class="card-body">
 				      <h5 class="card-title" style="margin-bottom: 0.1rem;">'.strtoupper($ename).'</h5>
 				      <p class="card-text card_p">'.ucfirst($about).'</p>
@@ -93,9 +92,9 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 					    	<i class="fa fa-calendar-alt iconcolors"></i> '.$edate. '  <i class="fa fa-clock iconcolors"></i> '.date("h:iA",strtotime($edate)).'
 					    </li>
 
-					    <li class="list-group-item"><i class="fa fa-ticket-alt iconcolors"></i> Ticket: <b> '.strtoupper($ticket).'</b></li>
+					    <li class="list-group-item"><i class="fa fa-ticket-alt iconcolors"></i> Rate: <b> '.strtoupper($ticket).'</b></li>
 					  </ul> <br>
-				      <a href="#" class="btn btn-primary">Event Details</a>
+				      <a href="../event_page.php?id='.$eid.'" class="btn btn-primary">Event Details</a>
 				    </div>
 				    <div class="card-footer">
 				      <small class="text-muted">Published: <b> '.$cdate.'</b>  By: <b>'.ucwords($event_creator).'</b></small>

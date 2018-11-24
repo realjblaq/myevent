@@ -14,12 +14,7 @@ include('../authentication/session.php');
             $free_paid = $_POST['free_paid'];
             $ticket_price = $_POST['ticket_price'];
             $ticket_quantity = $_POST['ticket_quantity'];
-            // $picture_upload = $_POST['picture_upload'];
-            // $video_upload = $_POST['video_upload'];
-            // $picture_upload = $_POST['picture_upload'];
-            // $video_upload = $_POST['video_upload'];
-
-            //get file name
+            
             //-----------------------------------------------------------------------------
 
             //for poster
@@ -57,7 +52,7 @@ include('../authentication/session.php');
             if ($file_type2=="video/mp4"){
                 move_uploaded_file($_FILES['video_upload']['tmp_name'], $targetfolderv);
             }else {
-             echo "You may only upload videos<br>";
+             echo "You may only upload videos";
             }  
             
             //-----------------------------------------------------------------------------
@@ -67,8 +62,7 @@ include('../authentication/session.php');
             VALUES ('".$session_id."','".$event_name."','".$free_paid."','".$event_description."','".$picturename."','".$videoname."','".$event_venue."','".$event_date."','".$ticket_quantity."','".$ticket_price."')";
 
             $result = mysqli_query($conn,$sql);
-            // echo $sql;
-            //     exit();
+           
 
             if ($result) {
 
@@ -82,7 +76,6 @@ include('../authentication/session.php');
                             </script>';
             }
             else{
-                // echo $sql;exit();
                 $event_post_message = "<script type='text/javascript'>swal('Error!', 'Something went wroing!', 'error')</script>";        
             }
     }
@@ -128,7 +121,7 @@ include('../authentication/session.php');
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Manage Event</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li>
-                            <a href="#" id="addEvent"><i class="fa fa-plus-square" ></i>   Add Event</a>
+                            <a href="add_event.php" id="addEvent"><i class="fa fa-plus-square" ></i>   Add Event</a>
                         </li>
                         <li>
                             <a href="#" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
@@ -165,15 +158,10 @@ include('../authentication/session.php');
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
-                </li>
-                <li>
-                    <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+                    <a href="profile.php" class="article">Back to Home page</a>
                 </li>
             </ul>
-            <ul class="list-unstyled ">
-               <a href="../authentication/logout.php"> <p><i class="fa fa-sign-out-alt"></i> Logout</p></a>
-            </ul>
+            
 
         </nav>
 
@@ -194,8 +182,14 @@ include('../authentication/session.php');
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#"><i class="fa fa-user-edit userediticon"> </i> <?php echo ucwords($login_session); ?></a>
+                                <a class="nav-link" href=""><i class="fa fa-user-edit userediticon"> </i> <?php echo ucwords($login_session); ?></a>
                             </li>
+                             <li class="nav-item active">
+                                <a class="nav-link" href="../authentication/logout.php"><i class="fa fa-sign-out-alt userediticon"> </i> Logout</a>
+                            </li>
+                            <!-- <li class="nav-item active">
+                               <a class="nav-link" href="../authentication/logout.php"> <p><i class="fa fa-sign-out-alt"></i> Logout</p></a>
+                            </li> -->
                             
                         </ul>
                         <div class="nav-item dropdown" ></div>
@@ -209,7 +203,7 @@ include('../authentication/session.php');
 
             <div class="row myrow " id="contentChange">
 
-            	<form class="jumbotron col-sm-8" method="post" enctype="multipart/form-data">
+            	<form class="jumbotron col-sm-8 dashboardform" method="post" enctype="multipart/form-data">
 
             		<div class="row form-group">
 
@@ -269,15 +263,6 @@ include('../authentication/session.php');
 
 				  </div>
 
-				  
-				  	<!-- <div class="form-group">
-				  		<label for="exampleFormControlTextarea1">Select Event Poster <small>(This helps promote your event better).</small></label>
-						<div class="custom-file">
-						  <input name="picture_upload" type="file" class="custom-file-input" id="customFile">
-						  <label class="custom-file-label" for="customFile">Choose picture...</label>
-						</div>
-					</div> -->
-
                     <div class="form-group">
                         <label>Select Event Poster <small>(This helps promote your event better).</small></label>
                         <input name="picture_upload" type="file" class="form-control">
@@ -288,17 +273,7 @@ include('../authentication/session.php');
                         <input name="video_upload" type="file" class="form-control">
                      </div>
 
-					<!-- <div class="form-group">
-				  		<label for="exampleFormControlTextarea1">Select Video Advert <small>(This helps promote your event better).</small></label>
-						<div class="custom-file">
-						  <input name="video_upload" type="file" class="custom-file-input" id="customFile">
-						  <label class="custom-file-label" for="customFile">Choose video...</label>
-						</div>
-					</div>
- -->
 					<button name="publish_event" type="submit" class="btn btn-primary">Publish Event</button>
-
-
 
 				</form>
 
@@ -307,19 +282,10 @@ include('../authentication/session.php');
 
             </div>
 
-
-
-           
-
-            
-
-            <!-- <div class="line"></div>
-            <div class="line"></div> -->
-
         </div>
         <!-- content end -->
     </div> 
-    <!-- whoe page end -->
+    <!-- whole page end -->
 	
 	<script type="text/javascript" src="../js/jquery.js"></script>
 	<script type="text/javascript" src="../js/sweetalert.min.js"></script>
