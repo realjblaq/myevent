@@ -78,6 +78,7 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 	$event_creator = $nrow['fname']." ".$nrow['lname'];
 
 
+	// for index and profile page
 	$list .= '<div class="col-lg-4" style="margin-bottom: 15px;">
 		    	<div class="card">
 				    <img class="card-img-top" src="../media/images/'.$image.'" alt="Card image cap" style="height: 350px;">
@@ -101,6 +102,32 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 				    </div>
 				  </div>
 		    </div>';
+
+		    // for edit_event
+		    // $listx .='<hr class="hr"></hr>
+      //       <div class="container-fluid">
+
+      //           <div class="row alert alert-secondary">
+      //           <div class="col">
+      //               '.strtoupper($ename).'
+      //           </div>
+      //           <div class="col">
+      //               <small>Published on: '.$date_create.'</small>
+      //           </div>
+      //           <div class="col-1">
+      //               <button class="btn btn-secondary">
+      //                   <i class="fa fa-edit"></i> Edit
+      //               </button>
+      //           </div>
+      //           <div class="col-2">
+      //               <button class="btn btn-danger">
+      //                  <i class="fa fa-trash"></i> Delete
+      //               </button>
+      //           </div>
+      //       </div>
+                
+      //       </div>';
+
 }
 
 ?>

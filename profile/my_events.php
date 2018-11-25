@@ -63,9 +63,7 @@ include('../authentication/session.php');
 
             $result = mysqli_query($conn,$sql);
            
-
             if ($result) {
-
 
                 $event_post_message = '<script type="text/javascript">
                                 setTimeout(function () {
@@ -87,26 +85,26 @@ include('../authentication/session.php');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MYeVENT-Dashboard</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
+    <title>MYeVENT-Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<link rel="icon" type="image/png" href="../favicon.png"/>
-	<link rel="stylesheet" type="text/css" href="../fontawesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.min.css">
- 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
-	<link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
-	<link rel="stylesheet" type="text/css" href="../css/flatpickr.css">
+    <link rel="icon" type="image/png" href="../favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../css/flatpickr.css">
     <script type="text/javascript" src="../js/sweetalert.min.js"></script>
 </head>
 <body>
 
     <?php echo $event_post_message; ?>
 
-	<div class="wrapper">
+    <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header" >
@@ -116,7 +114,7 @@ include('../authentication/session.php');
             </div>
 
             <ul class="list-unstyled components">
-               <a href="dashboard.php"><p><i class="fa fa-tachometer-alt"></i> Dashboard</p></a> 
+                <a href="dashboard.php"><p><i class="fa fa-tachometer-alt"></i> Dashboard</p></a>
                 <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Manage Event</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -179,6 +177,8 @@ include('../authentication/session.php');
                         <i class="fas fa-align-justify"></i>
                     </button>
 
+                    
+
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
@@ -193,25 +193,36 @@ include('../authentication/session.php');
                             
                         </ul>
                         <div class="nav-item dropdown" ></div>
-   	
+    
                     </div>
                 </div>
             </nav>
             <!-- nav end -->
 <!-- lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll -->
-                       <?php include 'navcontent.php'; ?>
+<!--                        <?php include 'navcontent.php'; ?>
+ -->
+                       <span>
+                        <h5>Archived Events</h5>
+                        </span>
 
-           
+
+
+                 
+
+            </div>
+
+        </div>
+        <!-- content end -->
     </div> 
     <!-- whole page end -->
-	
-	<script type="text/javascript" src="../js/jquery.js"></script>
-	<script type="text/javascript" src="../js/sweetalert.min.js"></script>
-	<script type="text/javascript" src="../js/popper.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.bundle.js"></script>
-	<script type="text/javascript" src="../js/jquery.mCustomScrollbar.js"></script>
-	<script type="text/javascript" src="../js/flatpickr.js"></script>
+    
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="../js/jquery.mCustomScrollbar.js"></script>
+    <script type="text/javascript" src="../js/flatpickr.js"></script>
     
     <script type="text/javascript">
         $(document).ready(function () {
@@ -229,41 +240,41 @@ include('../authentication/session.php');
 //-----------------------------------------------------------
     window.onscroll = function() {myFunction()};
 
-	var navbar = document.getElementById("navtop");
-	var sticky = navbar.offsetTop;
+    var navbar = document.getElementById("navtop");
+    var sticky = navbar.offsetTop;
 
-	function myFunction() {
-	  if (window.pageYOffset >= sticky) {
-	    navbar.classList.add("sticky")
-	  } else {
-	    navbar.classList.remove("sticky");
-	  }
-	}
+    function myFunction() {
+      if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+      } else {
+        navbar.classList.remove("sticky");
+      }
+    }
 //------------------------------------------------------------
-	$('li.collapse li').click(function() {
-		$(this).parent().find('li').removeClass('act');
-		$(this).addClass('linkactive');
+    $('li.collapse li').click(function() {
+        $(this).parent().find('li').removeClass('act');
+        $(this).addClass('linkactive');
     // $('li').removeClass();
     // $(this).parent().addClass('linkactive');
-	});
+    });
 
 //-----------------------------------------------------------
-	$('.pick').flatpickr({
-		enableTime: true,
-	    dateFormat: "Y-m-d H:i",
-	    minDate: "today",
-	});
+    $('.pick').flatpickr({
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+    });
 //-----------------------------------------------------------
-	function showPriceInput(){
-	  document.getElementById('priceInput').style.display ='flex';
-	}
-	function hidePriceInput(){
-	  document.getElementById('priceInput').style.display = 'none';
-	}
+    function showPriceInput(){
+      document.getElementById('priceInput').style.display ='flex';
+    }
+    function hidePriceInput(){
+      document.getElementById('priceInput').style.display = 'none';
+    }
 
     </script>
 
     
-	
+    
 </body>
 </html>

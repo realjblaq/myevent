@@ -15,6 +15,7 @@
 	$event_creator = '';
 	$cdate = '';
 
+
 $event_sql=mysqli_query($conn, "SELECT * FROM events ORDER BY date_created DESC");
 $list = '';
 while ($erow = mysqli_fetch_assoc($event_sql)) {

@@ -63,9 +63,7 @@ include('../authentication/session.php');
 
             $result = mysqli_query($conn,$sql);
            
-
             if ($result) {
-
 
                 $event_post_message = '<script type="text/javascript">
                                 setTimeout(function () {
@@ -116,7 +114,7 @@ include('../authentication/session.php');
             </div>
 
             <ul class="list-unstyled components">
-                <p><i class="fa fa-tachometer-alt"></i> Dashboard</p>
+                <a href="dashboard.php"><p><i class="fa fa-tachometer-alt"></i> Dashboard</p></a>
                 <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Manage Event</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -124,7 +122,7 @@ include('../authentication/session.php');
                             <a href="add_event.php" id="addEvent"><i class="fa fa-plus-square" ></i>   Add Event</a>
                         </li>
                         <li>
-                            <a href="#" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
+                            <a href="edit_event.php" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
                         </li>
                         <li>
                             <a href="#" id="myEvents"><i class="fa fa-calendar-alt" ></i>   My Events</a>
@@ -179,6 +177,8 @@ include('../authentication/session.php');
                         <i class="fas fa-align-justify"></i>
                     </button>
 
+                    
+
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
@@ -199,7 +199,12 @@ include('../authentication/session.php');
             </nav>
             <!-- nav end -->
 <!-- lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll -->
-                       <?php include 'navcontent.php'; ?>
+<!--                        <?php include 'navcontent.php'; ?>
+ -->
+                       <span>
+                        <h5>Create an Event</h5>
+                        </span>
+
 
             <div class="row myrow " id="contentChange">
 
