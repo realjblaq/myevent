@@ -201,11 +201,34 @@ include('../authentication/session.php');
 <!-- lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll -->
 <!--                        <?php include 'navcontent.php'; ?>
  -->
-                       <span>
-                        <h5>Archived Events</h5>
-                        </span>
+        <span>
+            <h5>Archived Events</h5>
+        </span>
 
-
+            <table class="table table-hover" style="">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Event Name</th>
+                  <th scope="col">Date Created</th>
+                  <th scope="col">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Becounted</td>
+                  <td>02/05/2018</td>
+                  <td>08:00AM</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Opening prayer</td>
+                  <td>Essien Edward</td>
+                  <td>8:00AM</td>
+                </tr>
+              </tbody>
+            </table>
 
                  
 

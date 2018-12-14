@@ -31,7 +31,7 @@ $listx='';
                     <small>Published on: <strong>'.date("D, d/M/Y", strtotime($date_createx)).' @ '.date("h:ia",strtotime($date_createx)).'</strong></small>
                 </div>
                 <div class="col-1" style="color:white;">
-                    <button type="button" class="btn btn-secondary openBtn" data-toggle="modal" data-target="#exampleModal" >
+                    <button type="button" class="btn btn-secondary openBtn" data-toggle="" data-target="" onclick="edit_event(\''.$eid.'\')" >
                         <i class="fa fa-edit"></i> Edit
                     </button>
 
@@ -121,11 +121,6 @@ $listx='';
                      </div>
 
                 </form>
-
-
-
-
-
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -137,9 +132,9 @@ $listx='';
 
                 </div>
                 <div class="col-2" style="color:white;">
-                    <a class="btn btn-danger"  href="delete_event.php?eidx='.$eid.'">
+                    <button class="btn btn-danger" onclick="delete_event(\''.$eid.'\')">
                        <i class="fa fa-trash"></i> Delete
-                    </a>
+                    </button>
                 </div>
             </div>
                 
@@ -345,6 +340,28 @@ $listx='';
             $('#myModal').modal({show:true});
         });
     });
+//--------------------------------------------------------------
+    function delete_event(event){
+        swal({
+                  title: "Are you sure?",
+                  text: "Once canceled, you cannot recover this reservation!",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {'.mysqli_query($conn, $sql).'
+                    window.location.href = 'delete_event.php?bookingID='+event;
+                  } else {
+                    swal("Your reservation is safe!");
+
+                    }
+                });
+    }
+//------------------------------------------------------------------
+    function edit_event(event){            
+        window.location.href = 'event_edit.php?event_id='+event;                
+    }
 
     </script>
 

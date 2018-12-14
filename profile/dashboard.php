@@ -199,8 +199,13 @@ include('../authentication/session.php');
             </nav>
             <!-- nav end -->
 <!-- lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll -->
-                       <?php include 'navcontent.php'; ?>
+<!--<?php include 'navcontent.php'; ?> -->
 
+    <div class="content">
+        <span class="display-4">Welcome to your dashboard.</span>
+        <p>Click on Manage Event on the left menu to add your event</p>
+        <img src="../img/dashpic2.png" width="500"><br>
+    </div>
            
     </div> 
     <!-- whole page end -->

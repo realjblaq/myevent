@@ -119,7 +119,7 @@ include('../authentication/session.php');
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Manage Event</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li>
-                            <a href="add_event.php" id="addEvent"><i class="fa fa-plus-square" ></i>   Add Event</a>
+                            <a href="add_event.php" id="addEvent"><i class="fa fa-plus-square"></i>   Add Event</a>
                         </li>
                         <li>
                             <a href="edit_event.php" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
@@ -255,14 +255,14 @@ include('../authentication/session.php');
                             <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
                                 <div class="input-group-text">GHS:</div>                        
                             </div>
-                            <input name="ticket_price" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1.00" value="0.00">
+                            <input name="ticket_price" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1.00" value="0.00" min="1">
                         </div>
 
                         <div class="input-group form-group" id="priceInput">
                             <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
                                 <div class="input-group-text">QTY:</div>                        
                             </div>
-                            <input name="ticket_quantity" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1" value="0">
+                            <input name="ticket_quantity" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1" value="0" min="1">
                         </div>                              
                     </div>
 

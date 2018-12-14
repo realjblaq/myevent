@@ -4,14 +4,21 @@ session_start();
 
 $session_id=$_SESSION['uid'];
 
+if(!isset($_SESSION['uid'])){
+mysqli_close($conn); // Closing Connection
+header('Location: ../authentication/login.php'); // Redirecting To Home Page
+}
+
+// $session_id=$_SESSION['uid'];
+
 //for user name
 $ses_sql=mysqli_query($conn, "SELECT username FROM users WHERE uid='$session_id'");
 $row = mysqli_fetch_assoc($ses_sql);
 $login_session =$row['username'];
-if(!isset($login_session)){
-mysql_close($conn); // Closing Connection
-header('Location: login.php'); // Redirecting To Home Page
-}
+// if(!isset($login_session)){
+// mysqli_close($conn); // Closing Connection
+// header('Location: ../authentication/login.php'); // Redirecting To Home Page
+// }
 
 //load the page with events
 

@@ -1,75 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title>MYeVENT-Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style type="text/css">
+    .candidates {
+      font-size: 12px;
+      background: #fff;
+      margin: 45px;
+      width: 480px;
+      border-collapse: collapse;
+      text-align: left;
+    }
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="favicon.png"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css">
- 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="css/videopopup.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/flatpickr.css">
+    .candidates th {
+      font-size: 16px;
+      font-weight: normal;
+      color: #039;
+      padding: 10px 8px;
+      border-bottom: 2px solid #6678b1;
+    }
+
+    .candidates td {
+      color: #669;
+      padding: 9px 8px 0px 8px;
+    }
+
+    .candidates tbody tr:hover td {
+      color: #009;
+    }
+  </style>
+  <title>Document</title>
 </head>
+
 <body>
+  <div id="container">
 
-	<?php 
+    <h2> Demo Table Of Candidates <h2>
+    <table class="candidates" id="candidates_example">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Skills</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>Cirpo</td>
+        <td>JavaScript, Docker</td>
+      </tr>
+      <tr>
+        <td>Louis</td>
+        <td>Java, AEM</td>
+      </tr>
+      <tr>
+        <td>Nermin</td>
+        <td>.NET, Azure</td>
+      </tr>
+    </table>
+    
+    <h2> Candidates (Currently Unfiltered) <h2>
 
-		$name= $_FILES['file']['name'];
-
-		$tmp_name= $_FILES['file']['tmp_name'];
-
-		$position= strpos($name, ".");
-
-		$fileextension= substr($name, $position + 1);
-
-		$fileextension= strtolower($fileextension);
-
-
-		if (isset($name)) {
-
-		$path= 'media/';
-		if (empty($name))
-		{
-		echo "Please choose a file";
-		}
-		else if (!empty($name)){
-		if (($fileextension !== "mp4") && ($fileextension !== "ogg") && ($fileextension !== "webm"))
-		{
-		echo "The file extension must be .mp4, .ogg, or .webm in order to be uploaded";
-		}
-
-
-		else if (($fileextension == "mp4") || ($fileextension == "ogg") || ($fileextension == "webm"))
-		{
-		if (move_uploaded_file($tmp_name, $path.$name)) {
-		echo 'Uploaded!';
-		}
-		}
-		}
-		}
-	?>
+  </div>
 
 
-	<form action="" method='post' enctype="multipart/form-data">
-		<input type="file" name="file"/>
-		<br><br>
-		<input type="submit" value="Upload"/>
-	</form>
-	</form>
+  <script type="text/javascript">
+    const newCandidates = [
+      { name: "Kerrie", skills: ["JavaScript", "Docker", "Ruby"] },
+      { name: "Mario", skills: ["Python", "AWS"] },
+      { name: "Jacquline", skills: ["JavaScript", "Azure"] },
+      { name: "Kathy", skills: ["JavaScript", "Java"] },
+      { name: "Anna", skills: ["JavaScript", "AWS"] },
+      { name: "Matt", skills: ["PHP", "AWS"] },
+      { name: "Matt", skills: ["PHP", ".Net", "Docker"] },
+    ];
 
-	
-	
+    function removeRowsFromTable(table) {
+      const rows = table.getElementsByTagName("tr");
 
+      while (rows.length > 1) {
+        table.deleteRow(1);
+      }
+    }
 
+    function insertCandidate(tbody, name, skills) {
+      const newRow = tbody.insertRow();
+      const nameCell = newRow.insertCell();
+      const skillCell = newRow.insertCell();
 
+      const candidateName = document.createTextNode(name);
+      const candidateSkills = document.createTextNode(skills.join(', '));
 
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/flatpickr.js"></script>
-<script type="text/javascript" src="js/bootstrap.bundle.js"></script>
-<script type="text/javascript" src="js/videopopup.js"></script>
+      nameCell.appendChild(candidateName);
+      skillCell.appendChild(candidateSkills);
+    }
 
- </body>
+    function addCandidatesToTable(table, candidates) {
+      candidates.forEach(candidate => insertCandidate(table, candidate.name, candidate.skills));
+    }
+
+    function filterCandidateBySkill(candidates, skill) {
+      // INSERT YOUR LOGIC HERE   <-------------------------
+      return candidates;
+    }
+
+    const candidatesTable = document.getElementById("candidates_example");
+    const newCandidatesTable = candidatesTable.cloneNode(true);
+
+    removeRowsFromTable(newCandidatesTable);
+    const newTbody = newCandidatesTable.getElementsByTagName('tbody')[0];
+
+    const filteredCandidates = filterCandidateBySkill(newCandidates, 'JavaScript')
+    addCandidatesToTable(newTbody, filteredCandidates)
+
+    document.body.appendChild(newCandidatesTable);
+
+  </script>
+</body>
+
 </html>

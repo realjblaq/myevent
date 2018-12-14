@@ -1,9 +1,10 @@
 <?php 
 include '../config/connection.php';
 $eidx = '';
+// exit();
 
-if (isset($_GET['eidx'])) {
-	$eidx = $_GET['eidx'];
+if (isset($_GET['bookingID'])) {
+	$eidx = $_GET['bookingID'];
 
 }
 
@@ -12,7 +13,7 @@ if(mysqli_query($conn, $sql)){
     header('Location:edit_event.php');
 }  
 else{ 
-    echo "ERROR: Could not able to execute $sql. "  
+    echo "ERROR: Could not be able to execute $sql. "  
                                    . mysqli_error($conn); 
 } 
 mysqli_close($conn); 
