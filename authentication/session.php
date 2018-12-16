@@ -2,23 +2,17 @@
 include '../config/connection.php';
 session_start();
 
-$session_id=$_SESSION['uid'];
-
-if(!isset($_SESSION['uid'])){
-mysqli_close($conn); // Closing Connection
-header('Location: ../authentication/login.php'); // Redirecting To Home Page
+if (!isset($_SESSION['uid'])) {
+	mysqli_close($conn); // Closing Connection
+    echo '<script type="text/javascript">alert("You have to login first!");window.location = "../authentication/login.php";</script>';
 }
 
-// $session_id=$_SESSION['uid'];
+$session_id=$_SESSION['uid'];
 
 //for user name
 $ses_sql=mysqli_query($conn, "SELECT username FROM users WHERE uid='$session_id'");
 $row = mysqli_fetch_assoc($ses_sql);
 $login_session =$row['username'];
-// if(!isset($login_session)){
-// mysqli_close($conn); // Closing Connection
-// header('Location: ../authentication/login.php'); // Redirecting To Home Page
-// }
 
 //load the page with events
 
@@ -36,7 +30,7 @@ $login_session =$row['username'];
 	$event_creator = '';
 	$cdate = '';
 
-$event_sql=mysqli_query($conn, "SELECT * FROM events ORDER BY date_created DESC");
+$event_sql=mysqli_query($conn, "SELECT * FROM events WHERE edate>= CURDATE() ORDER BY date_created DESC");
 $list = '';
 while ($erow = mysqli_fetch_assoc($event_sql)) {
 	$eid =  $erow['eid'];
@@ -88,23 +82,31 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 	// for index and profile page
 	$list .= '<div class="col-lg-4" style="margin-bottom: 15px;">
 		    	<div class="card">
-				    <img class="card-img-top" src="../media/images/'.$image.'" alt="Card image cap" style="height: 350px;">
-					  <div class="card-body">
+				    <img class="card-img-top zoom2" src="../media/images/'.$image.'" alt="Card image cap" style="height: 350px;">
+					  <div class="card-body" style="height:240px;">
 				      <h5 class="card-title" style="margin-bottom: 0.1rem;">'.strtoupper($ename).'</h5>
-				      <p class="card-text card_p">'.ucfirst($about).'</p>
+				      <cite class="card-text card_p"><small>'.ucfirst($about).'</small></cite>
 				      <ul class="list-group list-group-flush">
 
-					    <li class="list-group-item" style="padding: -0.25rem 1.25rem;">
-					    	<i class="fa fa-map-marker-alt iconcolors"> </i> ' .ucwords($location).'
-					    	<br>
-					    	<i class="fa fa-calendar-alt iconcolors"></i> '.$edate. '  <i class="fa fa-clock iconcolors"></i> '.date("h:iA",strtotime($edate)).'
+					    <li class="list-group-item card_p" style="padding: -0.25rem 1.25rem;">
+					    	<small><i class="fa fa-map-marker-alt iconcolors"> </i><b> ' .ucwords($location).'</b></small>
 					    </li>
 
-					    <li class="list-group-item"><i class="fa fa-ticket-alt iconcolors"></i> Rate: <b> '.strtoupper($ticket).'</b></li>
+					    <li class="list-group-item">
+					    <small>
+					    <i class="fa fa-calendar-alt iconcolors"></i><b> '.$edate.'</b>
+					    <i class="fa fa-clock iconcolors"></i><b> '.date("h:iA",strtotime($edate)).'</b>
+					    </small>
+					    </li>
+
+					    <li class="list-group-item"><i class="fa fa-ticket-alt iconcolors">
+					    <small></i> Rate: <b> '.strtoupper($ticket).'</b></small>
+					    </li>
+
 					  </ul> <br>
-				      <a href="../event_page.php?id='.$eid.'" class="btn btn-primary">Event Details</a>
+				      <a href="../event_page.php?id='.$eid.'" class="btn btn-primary btn-sm"><small>Event Details</small></a>
 				    </div>
-				    <div class="card-footer">
+				    <div class="card-footer" style="height:40px; padding-top:5px;">
 				      <small class="text-muted">Published: <b> '.$cdate.'</b>  By: <b>'.ucwords($event_creator).'</b></small>
 				    </div>
 				  </div>

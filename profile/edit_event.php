@@ -148,7 +148,7 @@ $listx='';
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MYeVENT-Dashboard</title>
+    <title>MYeVENT-Edit Event</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -188,7 +188,7 @@ $listx='';
                             <a href="edit_event.php" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
                         </li>
                         <li>
-                            <a href="my_events.php" id="myEvents"><i class="fa fa-calendar-alt" ></i>   My Events</a>
+                            <a href="my_events.php" id="myEvents"><i class="fa fa-calendar-alt" ></i>   Archived Events</a>
                         </li>
                     </ul>
                 </li>
@@ -344,7 +344,7 @@ $listx='';
     function delete_event(event){
         swal({
                   title: "Are you sure?",
-                  text: "Once canceled, you cannot recover this reservation!",
+                  text: "Once deleted, you cannot recover this event!",
                   icon: "warning",
                   buttons: true,
                   dangerMode: true,
@@ -353,7 +353,7 @@ $listx='';
                   if (willDelete) {'.mysqli_query($conn, $sql).'
                     window.location.href = 'delete_event.php?bookingID='+event;
                   } else {
-                    swal("Your reservation is safe!");
+                    swal("Your event is safe!");
 
                     }
                 });

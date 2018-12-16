@@ -14,7 +14,7 @@ include('../authentication/session.php');
             $free_paid = $_POST['free_paid'];
             $ticket_price = $_POST['ticket_price'];
             $ticket_quantity = $_POST['ticket_quantity'];
-            
+            // echo $event_name; exit();
             //-----------------------------------------------------------------------------
 
             //for poster
@@ -68,7 +68,7 @@ include('../authentication/session.php');
                 $event_post_message = '<script type="text/javascript">
                                 setTimeout(function () {
                                     swal("Good job!","You have published your event.","success").then( function(val) {
-                                        if (val == true) window.location.href = \'dashboard.php\';
+                                        if (val == true) window.location.href = \'add_event.php\';
                                     });
                                 }, 200);  
                             </script>';
@@ -125,7 +125,7 @@ include('../authentication/session.php');
                             <a href="edit_event.php" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
                         </li>
                         <li>
-                            <a href="#" id="myEvents"><i class="fa fa-calendar-alt" ></i>   My Events</a>
+                            <a href="#" id="myEvents"><i class="fa fa-calendar-alt" ></i>   Archived Events</a>
                         </li>
                     </ul>
                 </li>
@@ -255,14 +255,14 @@ include('../authentication/session.php');
                             <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
                                 <div class="input-group-text">GHS:</div>                        
                             </div>
-                            <input name="ticket_price" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1.00" value="0.00" min="1">
+                            <input name="ticket_price" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1.00" value="0.00" min="">
                         </div>
 
                         <div class="input-group form-group" id="priceInput">
                             <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
                                 <div class="input-group-text">QTY:</div>                        
                             </div>
-                            <input name="ticket_quantity" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1" value="0" min="1">
+                            <input name="ticket_quantity" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1" value="0" min="">
                         </div>                              
                     </div>
 
@@ -314,18 +314,18 @@ include('../authentication/session.php');
         });
 
 //-----------------------------------------------------------
-    window.onscroll = function() {myFunction()};
+    // window.onscroll = function() {myFunction()};
 
-    var navbar = document.getElementById("navtop");
-    var sticky = navbar.offsetTop;
+    // var navbar = document.getElementById("navtop");
+    // var sticky = navbar.offsetTop;
 
-    function myFunction() {
-      if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
-      } else {
-        navbar.classList.remove("sticky");
-      }
-    }
+    // function myFunction() {
+    //   if (window.pageYOffset >= sticky) {
+    //     navbar.classList.add("sticky")
+    //   } else {
+    //     navbar.classList.remove("sticky");
+    //   }
+    // }
 //------------------------------------------------------------
     $('li.collapse li').click(function() {
         $(this).parent().find('li').removeClass('act');

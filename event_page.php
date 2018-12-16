@@ -65,7 +65,7 @@
 	}
 
 	//program outline--------------------------------------------------------------
-	$outline_sql=mysqli_query($conn, "SELECT * FROM program_outline WHERE eid = '$fid'");
+	$outline_sql=mysqli_query($conn, "SELECT * FROM program_outline WHERE eid = '$fid' ORDER BY pid");
 	$outline='';    
     while ($row = mysqli_fetch_assoc($outline_sql)) {
     	$pid_fetch = $row['pid'];
@@ -151,17 +151,19 @@
 	    <img src="img/logowhite.png" width="150" height="30" alt="">
 	  </a>
 
-		<a class="btn btn-primary my-2 my-sm-0" href="index.php"><i class="fa fa-home"></i> Back to Homepage</a>
+		<a class="btn btn-primary btn-sm my-2 my-sm-0" href="index.php"><i class="fa fa-home"></i> Back to Homepage</a>
 
-		<a class="btn btn-primary my-2 my-sm-0" href="authentication/login.php"><i class="fa fa-plus"></i> Create Event</a>
+		<a class="btn btn-primary btn-sm my-2 my-sm-0" href="authentication/login.php"><i class="fa fa-plus"></i> Create Event</a>
 
 
      <form class="form-inline my-2 my-lg-0" style="color: white;">
-     	<a href="authentication/login.php" class="a" style="color: white;"> Share</a>
+     	<i class="fa fa-share-alt" title="Share this event"></i>
      	<span style="width: 20px;">  </span>
-      	<a href="authentication/register.php" class="a" style="color: white;">Share</a>
+     	<a href="https://www.facebook.com" target="_blank" class="a" style="color: white;" title="Share on facebook"> <img src="img/facebook.png" width="15"></a>
+     	<span style="width: 20px;">  </span>
+      	<a href="https://www.twitter.com" target="_blank" class="a" style="color: white;" title="Share on twitter"> <img src="img/twitter.png" width="15"></a>
    		<span style="width: 20px;">  </span>
-      	<a href="authentication/register.php" class="a" style="color: white;">Share</a>
+      	<a href="https://www.instagram.com" target="_blank" class="a" style="color: white;" title="Share on instagram"> <img src="img/instagram.png" width="15"></a>
    	 </form>
 
 	</nav> 
@@ -230,9 +232,12 @@
 										
 										<!-- <h1 class="display-4"><strong><?php echo strtoupper($ename);?></strong></h1> -->
 										<!-- <hr class="hr"></hr> -->
-										<div>
-											<img src="media/images/<?php echo $image;?>" width="300">
+										<div >
+											<img class="zoom" src="media/images/<?php echo $image;?>" width="310">
 										</div>
+										<br>
+										<br>
+										<br>
 										<br>
 										<div class="card display" style="min-width: 623px;">
 											<div class="card-body">
@@ -291,7 +296,75 @@
 										</span>
 										<hr class="hr"></hr>
 
-										<div class="container jumbotron">
+									<!-- <div class="container jumbotron">
+										<h5 class="center">Want to attend this event? Register here.</h5>
+											<br>
+										<form method="post" action="">						  
+										  <div class="form-group">
+										    <small class="form-text text-muted">Full Name</small>
+										    <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter your full name" name="fullname" required>
+										  </div>
+
+										  <div class="form-group">
+										    <small class="form-text text-muted">Email</small>
+										    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email address" name="email" required>
+										  </div>
+
+										  <div class="form-group">
+										    <small id="emailHelp" class="form-text text-muted">What are your expectations from the this event?</small>
+										    <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="What are your expectations?" name="expectations" required></textarea>
+										  </div>
+										    <button type="submit" class="btn btn-primary" name="register">Register</button>
+										</form>
+									</div> -->
+
+									<div class="container jumbotron" style="display: none;" id="buy">
+										<h5 class="center">Buy Tickets For This Event</h5>
+											<br>
+										<form method="post" action="">						  
+										  <div class="form-row">
+											    <div class="form-group col-md-6">
+											      <small for="inputEmail4">Full Name</small>
+											      <input type="email" class="form-control" id="inputEmail4" placeholder="Enter your full name">
+											    </div>
+											    <div class="form-group col-md-6">
+											      <small for="inputPassword4">Quantity</small>
+											      <input type="number" class="form-control" id="inputPassword4" placeholder="" value="1" min="1">
+											    </div>
+											</div>
+											<div class="wrapper">
+												<div class="form-group">
+													<small class="form-group custom-control-inline" for="exampleFormControlTextarea1">Payment Method:</small>
+						                        <div class="custom-control custom-radio custom-control-inline form-group">
+						                            <input type="radio" id="customRadioInline1" name="mobile_money" class="custom-control-input" value="free" required checked>
+						                            <label class="custom-control-label" for="customRadioInline1">MTN</label>
+						                        </div>
+						                        <div class="custom-control custom-radio custom-control-inline">
+						                            <input type="radio" id="customRadioInline2" value="paid" name="mobile_money" class="custom-control-input" disabled>
+						                            <label class="custom-control-label" for="customRadioInline2">AirtelTigo</label>
+						                        </div>
+												</div>
+												
+											</div>
+											<div class="form-row">
+											    <div class="form-group col-md-6">
+												  <small for="inputPassword4">Mobile money number</small>
+												  <input type="text" class="form-control" id="mobile" placeholder="Mobile number">
+												</div>
+												<div class="form-group col-md-6">
+												  <small for="inputPassword4">Email (Provide a correct email address)</small>
+												  <input type="email" class="form-control" id="mobile" placeholder="Email">
+												</div>
+											</div>
+											<div class="wrapper">
+										    	<button type="submit" class="btn btn-primary">Buy</button>
+											</div>
+										</form>
+									</div>
+									<hr class="hr"></hr>
+
+
+									<div class="container jumbotron">
 										<h5 class="center">Want to attend this event? Register here.</h5>
 											<br>
 										<form method="post" action="">						  
@@ -312,28 +385,6 @@
 										    <button type="submit" class="btn btn-primary" name="register">Register</button>
 										</form>
 									</div>
-
-									<hr class="hr"></hr>
-
-									<div class="container jumbotron" style="display: none;" id="buy">
-										<h5 class="center">Buy Tickets For This Event</h5>
-											<br>
-										<form method="post" action="">						  
-										  <div class="form-row">
-											    <div class="form-group col-md-6">
-											      <small for="inputEmail4">Full Name</small>
-											      <input type="email" class="form-control" id="inputEmail4" placeholder="Enter your full name">
-											    </div>
-											    <div class="form-group col-md-6">
-											      <small for="inputPassword4">Quantity</small>
-											      <input type="number" class="form-control" id="inputPassword4" placeholder="" value="1" min="1">
-											    </div>
-											</div>
-										    <button type="submit" class="btn btn-primary">Buy</button>
-										</form>
-									</div>
-
-
 									</div>
 
 									</div>
@@ -356,7 +407,8 @@
 									<!-- live feed -->
 									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 										<div class="embed-responsive embed-responsive-16by9">
-										  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+											<iframe width="560" height="315" src="https://www.youtube.com/embed/SMkDt2Azw5c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										  <!-- <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe> -->
 										</div>
 									</div>
 									<!--  -->

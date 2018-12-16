@@ -1,85 +1,31 @@
 <?php 
 include('../authentication/session.php');
-// echo $login_session;
-    $event_post_message = '';
-    $passerror = '';
-    $picturename = '';
-    $videoname = '';
-    if(isset($_POST['publish_event']))
-    {
-            $event_name = $_POST['event_name'];
-            $event_venue = $_POST['event_venue'];
-            $event_description = $_POST['event_description'];
-            $event_date = $_POST['event_date'];
-            $free_paid = $_POST['free_paid'];
-            $ticket_price = $_POST['ticket_price'];
-            $ticket_quantity = $_POST['ticket_quantity'];
-            
-            //-----------------------------------------------------------------------------
 
-            //for poster
-            $targetfolderp = "../media/images/";
-
-            $picturename = basename($_FILES['picture_upload']['name']);
-            $pexplode = explode(".", $picturename);
-            $ptype = end($pexplode);
-            $ptype = strtolower($ptype);
-            $picturename = md5($picturename.time().$session_id).'.'.$ptype;//make the picture name unique
+$event_sqlx=mysqli_query($conn, "SELECT * FROM events WHERE uid = '$session_id' AND edate>= CURDATE() ORDER BY date_created DESC");
+$listx='';    
+    while ($erowx = mysqli_fetch_assoc($event_sqlx)) {
+        $eid =  $erowx['eid'];
+        // $uid =  $erowx['uid'];
+        // $etype = $erowx['etype'];
+        $enamex =  $erowx['ename'];
+        // $about = $erow['about'];
+        // $image =  $erow['image'];
+        // $video =  $erow['video'];
+        // $location =  $erow['location'];
+        $edate =  $erowx['edate'];
+        $date_createx =  $erowx['date_created'];
+        // $ticket_qty = $erow['ticket_qty'];
+        // $ticket_price = $erow['ticket_price'];
+        // $_SESSION['eid'] = $eid;    
+        // $tick = $ticket_price;
 
 
-            $targetfolderp = $targetfolderp . $picturename ;
-            $ok=1;
-            $file_type=$_FILES['picture_upload']['type'];
-            if ($file_type=="image/png" || $file_type=="image/gif" || $file_type=="image/jpeg"){
-                move_uploaded_file($_FILES['picture_upload']['tmp_name'], $targetfolderp);
-                                     
-            }else {
-             echo "You may only JPEGs or GIF files.<br>";
-            }      
-
-            //for video advert
-            $targetfolderv = "../media/videos/";
-
-            $videoname = basename($_FILES['video_upload']['name']);
-            $vexplode = explode(".", $videoname);
-            $vtype = end($vexplode);
-            $vtype = strtolower($vtype);
-            $videoname = md5($videoname.time().$session_id).'.'.$vtype;
-
-            $targetfolderv = $targetfolderv . $videoname ;
-            $ok2=1;
-            $file_type2=$_FILES['video_upload']['type'];
-            if ($file_type2=="video/mp4"){
-                move_uploaded_file($_FILES['video_upload']['tmp_name'], $targetfolderv);
-            }else {
-             echo "You may only upload videos";
-            }  
-            
-            //-----------------------------------------------------------------------------
-
-            //$session_id
-            $sql = "INSERT INTO events (uid, ename, etype, about, image, video, location, edate, ticket_qty, ticket_price)
-            VALUES ('".$session_id."','".$event_name."','".$free_paid."','".$event_description."','".$picturename."','".$videoname."','".$event_venue."','".$event_date."','".$ticket_quantity."','".$ticket_price."')";
-
-            $result = mysqli_query($conn,$sql);
-           
-            if ($result) {
-
-                $event_post_message = '<script type="text/javascript">
-                                setTimeout(function () {
-                                    swal("Good job!","You have published your event.","success").then( function(val) {
-                                        if (val == true) window.location.href = \'dashboard.php\';
-                                    });
-                                }, 200);  
-                            </script>';
-            }
-            else{
-                $event_post_message = "<script type='text/javascript'>swal('Error!', 'Something went wroing!', 'error')</script>";        
-            }
+        $listx .='<tr>
+                  <td>'.strtoupper($enamex).'</td>
+                  <td>'.$edate.'</td>
+                  <td>'.$date_createx.'</td>
+                </tr>';
     }
-    // else{
-    //         $event_post_message = '<p style="color: red; margin-bottom: 5px;">Failed. Passwords do not match!</p>';         
-    //     }
 
 ?>
 <!DOCTYPE html>
@@ -125,7 +71,7 @@ include('../authentication/session.php');
                             <a href="edit_event.php" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
                         </li>
                         <li>
-                            <a href="my_events.php" id="myEvents"><i class="fa fa-calendar-alt" ></i>   My Events</a>
+                            <a href="my_events.php" id="myEvents"><i class="fa fa-calendar-alt" ></i>   Archived Events</a>
                         </li>
                     </ul>
                 </li>
@@ -208,25 +154,13 @@ include('../authentication/session.php');
             <table class="table table-hover" style="">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
                   <th scope="col">Event Name</th>
+                  <th scope="col">Event Date</th>
                   <th scope="col">Date Created</th>
-                  <th scope="col">Time</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Becounted</td>
-                  <td>02/05/2018</td>
-                  <td>08:00AM</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Opening prayer</td>
-                  <td>Essien Edward</td>
-                  <td>8:00AM</td>
-                </tr>
+                <?php echo $listx; ?>
               </tbody>
             </table>
 

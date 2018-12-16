@@ -1,3 +1,35 @@
+  <?php
+/**
+ * QR Code + Logo Generator
+ *
+ * http://labs.nticompassinc.com
+ */
+$data = isset($_GET['data']) ? $_GET['data'] : 'localhost/myevent/index.php';
+$size = isset($_GET['size']) ? $_GET['size'] : '200x200';
+$logo = isset($_GET['logo']) ? $_GET['logo'] : 'img/logo_min.png';
+header('Content-type: image/png');
+// Get QR Code image from Google Chart API
+// http://code.google.com/apis/chart/infographics/docs/qr_codes.html
+$QR = imagecreatefrompng('https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs='.$size.'&chl='.urlencode($data));
+if($logo !== FALSE){
+  $logo = imagecreatefromstring(file_get_contents($logo));
+  $QR_width = imagesx($QR);
+  $QR_height = imagesy($QR);
+  
+  $logo_width = imagesx($logo);
+  $logo_height = imagesy($logo);
+  
+  // Scale logo to fit in the QR Code
+  $logo_qr_width = $QR_width/3;
+  $scale = $logo_width/$logo_qr_width;
+  $logo_qr_height = $logo_height/$scale;
+  
+  imagecopyresampled($QR, $logo, $QR_width/3, $QR_height/3, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
+}
+imagepng($QR);
+imagedestroy($QR);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,118 +37,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <style type="text/css">
-    .candidates {
-      font-size: 12px;
-      background: #fff;
-      margin: 45px;
-      width: 480px;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    .candidates th {
-      font-size: 16px;
-      font-weight: normal;
-      color: #039;
-      padding: 10px 8px;
-      border-bottom: 2px solid #6678b1;
-    }
-
-    .candidates td {
-      color: #669;
-      padding: 9px 8px 0px 8px;
-    }
-
-    .candidates tbody tr:hover td {
-      color: #009;
-    }
-  </style>
+  
   <title>Document</title>
 </head>
 
 <body>
-  <div id="container">
-
-    <h2> Demo Table Of Candidates <h2>
-    <table class="candidates" id="candidates_example">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Skills</th>
-        </tr>
-      </thead>
-      <tr>
-        <td>Cirpo</td>
-        <td>JavaScript, Docker</td>
-      </tr>
-      <tr>
-        <td>Louis</td>
-        <td>Java, AEM</td>
-      </tr>
-      <tr>
-        <td>Nermin</td>
-        <td>.NET, Azure</td>
-      </tr>
-    </table>
-    
-    <h2> Candidates (Currently Unfiltered) <h2>
-
-  </div>
+  
 
 
-  <script type="text/javascript">
-    const newCandidates = [
-      { name: "Kerrie", skills: ["JavaScript", "Docker", "Ruby"] },
-      { name: "Mario", skills: ["Python", "AWS"] },
-      { name: "Jacquline", skills: ["JavaScript", "Azure"] },
-      { name: "Kathy", skills: ["JavaScript", "Java"] },
-      { name: "Anna", skills: ["JavaScript", "AWS"] },
-      { name: "Matt", skills: ["PHP", "AWS"] },
-      { name: "Matt", skills: ["PHP", ".Net", "Docker"] },
-    ];
+ 
 
-    function removeRowsFromTable(table) {
-      const rows = table.getElementsByTagName("tr");
-
-      while (rows.length > 1) {
-        table.deleteRow(1);
-      }
-    }
-
-    function insertCandidate(tbody, name, skills) {
-      const newRow = tbody.insertRow();
-      const nameCell = newRow.insertCell();
-      const skillCell = newRow.insertCell();
-
-      const candidateName = document.createTextNode(name);
-      const candidateSkills = document.createTextNode(skills.join(', '));
-
-      nameCell.appendChild(candidateName);
-      skillCell.appendChild(candidateSkills);
-    }
-
-    function addCandidatesToTable(table, candidates) {
-      candidates.forEach(candidate => insertCandidate(table, candidate.name, candidate.skills));
-    }
-
-    function filterCandidateBySkill(candidates, skill) {
-      // INSERT YOUR LOGIC HERE   <-------------------------
-      return candidates;
-    }
-
-    const candidatesTable = document.getElementById("candidates_example");
-    const newCandidatesTable = candidatesTable.cloneNode(true);
-
-    removeRowsFromTable(newCandidatesTable);
-    const newTbody = newCandidatesTable.getElementsByTagName('tbody')[0];
-
-    const filteredCandidates = filterCandidateBySkill(newCandidates, 'JavaScript')
-    addCandidatesToTable(newTbody, filteredCandidates)
-
-    document.body.appendChild(newCandidatesTable);
-
-  </script>
 </body>
 
 </html>

@@ -1,5 +1,7 @@
 <?php 
 include('../authentication/session.php');
+
+
 // echo $login_session;
     $event_post_message = '';
     $passerror = '';
@@ -127,7 +129,7 @@ include('../authentication/session.php');
                             <a href="edit_event.php" id="editEvent"><i class="fa fa-edit" ></i>   Edit Events</a>
                         </li>
                         <li>
-                            <a href="my_events.php" id="myEvents"><i class="fa fa-calendar-alt" ></i>   My Events</a>
+                            <a href="my_events.php" id="myEvents"><i class="fa fa-calendar-alt" ></i>   Archived Events</a>
                         </li>
                     </ul>
                 </li>
@@ -202,9 +204,9 @@ include('../authentication/session.php');
 <!--<?php include 'navcontent.php'; ?> -->
 
     <div class="content">
-        <span class="display-4">Welcome to your dashboard.</span>
-        <p>Click on Manage Event on the left menu to add your event</p>
-        <img src="../img/dashpic2.png" width="500"><br>
+        <h2 class="">Hi <b><?php echo ucwords($login_session); ?></b>, welcome to your dashboard.</h2>
+        <p class=""> <i class="fa fa-hand-point-left fa-lg bounce"></i> Click on <strong>Manage Event</strong> on the left menu to add your event</p>
+        <img src="../img/dashpic2.png" width="450"><br>
     </div>
            
     </div> 
@@ -232,18 +234,18 @@ include('../authentication/session.php');
         });
 
 //-----------------------------------------------------------
-    window.onscroll = function() {myFunction()};
+ //    window.onscroll = function() {myFunction()};
 
-	var navbar = document.getElementById("navtop");
-	var sticky = navbar.offsetTop;
+	// var navbar = document.getElementById("navtop");
+	// var sticky = navbar.offsetTop;
 
-	function myFunction() {
-	  if (window.pageYOffset >= sticky) {
-	    navbar.classList.add("sticky")
-	  } else {
-	    navbar.classList.remove("sticky");
-	  }
-	}
+	// function myFunction() {
+	//   if (window.pageYOffset >= sticky) {
+	//     navbar.classList.add("sticky")
+	//   } else {
+	//     navbar.classList.remove("sticky");
+	//   }
+	// }
 //------------------------------------------------------------
 	$('li.collapse li').click(function() {
 		$(this).parent().find('li').removeClass('act');

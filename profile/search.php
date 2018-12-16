@@ -1,10 +1,15 @@
 <?php 
-	include('config/connection.php');
+	include('../config/connection.php');
 	session_start();
 
-	if (isset($_SESSION['uid'])) {
-		header('location:profile/profile.php');
-	}
+	// if (isset($_SESSION['uid'])) {
+	// 	header('location:profile.php');
+	// }
+
+	//search query------------------------------------------------------------------
+	$search_value='';
+if (isset($_POST['search'])) {
+	$search_value = $_POST['search_value'];
 
 	$eid =  '';
 	$uid =  '';
@@ -20,7 +25,7 @@
 	$cdate = '';
 
 
-$event_sql=mysqli_query($conn, "SELECT * FROM events WHERE edate>= CURDATE() ORDER BY date_created DESC");
+$event_sql=mysqli_query($conn, "SELECT * FROM events WHERE (`ename` LIKE '%$search_value%') ORDER BY date_created DESC");
 $list = '';
 while ($erow = mysqli_fetch_assoc($event_sql)) {
 	$eid =  $erow['eid'];
@@ -63,7 +68,6 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 
 				$edate= date("d/m/Y", strtotime($edate));
 			}
-	//2018-11-04 00:10:45
 
 	$name_sql=mysqli_query($conn, "SELECT fname, lname FROM users WHERE uid = '$uid'");
 	$nrow = mysqli_fetch_assoc($name_sql);
@@ -73,7 +77,7 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 	$list .= '<div class="col-lg-4" style="margin-bottom: 15px;">
 		    	<div class="card">
 
-				    <img class="card-img-top zoom2" src="media/images/'.$image.'" alt="Card image cap" style="height: 350px;">
+				    <img class="card-img-top zoom2" src="../media/images/'.$image.'" alt="Card image cap" style="height: 350px;">
 
 					  <div class="card-body" style="height:240px;">
 				      <h5 class="card-title" style="margin-bottom: 0.1rem;">'.strtoupper($ename).'</h5>
@@ -98,7 +102,7 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 
 					  </ul> <br>
 
-				      <a href="event_page.php?id='.$eid.'" class="btn btn-primary btn-sm"><small>Event Details</small></a>
+				      <a href="../event_page.php?id='.$eid.'" class="btn btn-primary btn-sm"><small>Event Details</small></a>
 
 				    </div>
 
@@ -110,19 +114,24 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 		    </div>';
 }
 
+}elseif(empty($_POST['search_value'])){
+	echo '<script type="text/javascript">alert("Nothing was found!");window.location = "../index.php";</script>';
+}
+	
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MYeVENT-Home</title>
+	<title>MYeVENT-Search</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="icon" type="image/png" href="favicon.png"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css">
- 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="icon" type="image/png" href="../favicon.png"/>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.min.css">
+ 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
 <!-- 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
  -->
 	
@@ -130,29 +139,29 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 <body class="pagebody" style="padding-top: 80px;">
 	<nav class="navbar navbar-dark bg-dark sticky" id="navbar"">
 
-	  <a class="navbar-brand" href="#">
-	  	<img src="img/logo min.png" width="35" height="35" alt="">
-	    <img src="img/logowhite.png" width="150" height="30" alt="">
+	  <a class="navbar-brand" href="../index.php">
+	  	<img src="../img/logo min.png" width="35" height="35" alt="">
+	    <img src="../img/logowhite.png" width="150" height="30" alt="">
 	  </a>
 
-	<form class="form-inline" method="post" action="profile/search.php">
+	<form class="form-inline" method="post" action="search.php">
 		<div class="input-group input-group-sm mb-3">
 		  <div class="input-group-prepend">
 		    <span class="input-group-text" id="inputGroup-sizing-sm">Search</span>
 		  </div>
-		  	<input type="search" class="form-control mr-sm-2" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="search_value">
+		  	<input type="search" class="form-control mr-sm-2" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="search_value"  value="<?php echo $search_value; ?>">
     		<button class="btn btn-outline-primary btn-sm my-2 my-sm-0" type="submit" name="search">Search</button>
 		</div>
-    	<!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search_value">
+    	<!-- <input class="form-control mr-sm-2" type="search" value="<?php echo $search_value; ?>" aria-label="Search" name="search_value" >
     	<button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="search">Search</button> -->
  	</form>
 
- 	<a class="btn btn-primary btn-sm my-2 my-sm-0" href="profile/dashboard.php"><i class="fa fa-plus"></i> Create Event</a>
+ 	<a class="btn btn-primary btn-sm my-2 my-sm-0" href="dashboard.php"><i class="fa fa-plus"></i> Create Event</a>
 
      <form class="form-inline my-2 my-lg-0" style="color: white;">
-     	<a href="authentication/login.php" class="a" style="color: white;"> Login</a>
+     	<a href="../authentication/login.php" class="a" style="color: white;"> Login</a>
      	<span style="width: 20px;">  </span>
-      	<a href="authentication/register.php" class="a" style="color: white;">Register</a>
+      	<a href="../authentication/register.php" class="a" style="color: white;">Register</a>
    	 </form>
 
 	</nav> 
@@ -167,10 +176,10 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 	</div>	
 </div>
 
- <script type="text/javascript" src="js/jquery.js"></script>
- <script type="text/javascript" src="js/sweetalert.min.js"></script>
- <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
- <script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="../js/jquery.js"></script>
+ <script type="text/javascript" src="../js/sweetalert.min.js"></script>
+ <script type="text/javascript" src="../js/bootstrap.bundle.js"></script>
+ <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 
  <script type="text/javascript">
  	

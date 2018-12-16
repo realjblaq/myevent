@@ -44,6 +44,9 @@
             	VALUES ('".$_GET['event_id']."','".str_replace("'","\'", $role)."','".str_replace("'","\'", $name)."','".$time."')";
 
         $result = mysqli_query($conn,$sql);
+        if ($result) {
+        	header("location:event_edit.php?event_id=".$event_id);
+        }
     }
 
  //------------ upload file--------------------------------------------------------
@@ -91,6 +94,78 @@
     }
 
 
+//events fetch------------------------------------------------------------
+    $event_sql=mysqli_query($conn, "SELECT * FROM events WHERE eid = '$event_id'");
+	while ($erow = mysqli_fetch_assoc($event_sql)) {
+		$eid =  $erow['eid'];
+		$uid =  $erow['uid'];
+		$etype = $erow['etype'];
+		$ename =  $erow['ename'];
+		$about = $erow['about'];
+		$image =  $erow['image'];
+		$video =  $erow['video'];
+		$location =  $erow['location'];
+		$edate =  $erow['edate'];
+		$date_create =  $erow['date_created'];
+		$ticket_qty = $erow['ticket_qty'];
+		$ticket_price = $erow['ticket_price'];
+		$_SESSION['eid'] = $eid;	
+		$tick = $ticket_price;
+
+		$v='';
+
+		if($video){
+			$v = 1;
+		}else{
+			$v= 0;
+		}
+
+		if ($etype=='paid') {
+		$ticket = "GHS ".$ticket_price;
+		
+		}else{
+			$ticket = strtoupper("free");
+		}
+	}
+//-------------------------------------------------update event
+		$event_name = '';
+        $event_venue = '';
+        $event_description = '';
+        $event_date = '';
+        $free_paid ='';
+        $ticket_price = '';
+        $ticket_quantity = '';
+
+	if (isset($_POST['update_event'])) {
+		$event_name = $_POST['event_name'];
+        $event_venue = $_POST['event_venue'];
+        $event_description = $_POST['event_description'];
+        $event_date = $_POST['event_date'];
+        $free_paid = $_POST['free_paid'];
+        $ticket_price = $_POST['ticket_price'];
+        $ticket_quantity = $_POST['ticket_quantity'];
+
+        if ($free_paid=='free') {
+        	$ticket_quantity=0;
+        	$tick=0.00;
+        }
+        $updat_sql = "UPDATE events SET ename='$event_name', about='$event_description', edate='$event_date', location='$event_venue', ticket_qty='$ticket_quantity', ticket_price='$ticket_price', etype='$free_paid' WHERE eid=$event_id";
+        if ($conn->query($updat_sql) === TRUE) {
+        	$fileMessage= '<script type="text/javascript">
+	 				swal("Event updated successfully!", {
+	 				  icon: "success",
+					  buttons: false,
+					  timer: 1500,
+					});
+					</script>';
+
+		    header("location:event_edit.php?event_id=".$event_id);
+		} else {
+		    echo "Error updating record: " . $conn->error;
+		}
+	}
+	
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -128,55 +203,55 @@
 
 		                        <div class="col">
 		                            <label for="exampleInputEmail1">Event Name</label>
-		                            <input type="text" class="form-control" name="event_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Example: Football match" required>
+		                            <input type="text" class="form-control" name="event_name" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $ename; ?>" required>
 		                        </div>
 
 		                        <div class="col">
 		                            <i class="fa fa-map-marker-alt"></i>
 		                            <label for="exampleInputEmail1">Venue</label>
-		                            <input type="text" class="form-control" name="event_venue" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Example: Football match" required>
+		                            <input type="text" class="form-control" name="event_venue" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $location; ?>" required>
 		                        </div>
 		                    </div>
 
 		                 
 		                  <div class="form-group">
 		                    <label for="exampleFormControlTextarea1">Event Description</label> <small>(It should be short.)</small>
-		                    <textarea class="form-control" id="exampleFormControlTextarea1" name="event_description" rows="3" placeholder="Example: Students will play against lecturers." required></textarea>
+		                    <textarea class="form-control" id="exampleFormControlTextarea1" name="event_description" rows="3" value="" required><?php echo $about; ?></textarea>
 		                  </div>
 
 		                  <div class="input-group form-group">
 		                    <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
 		                        <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>                      
 		                    </div>
-		                    <input name="event_date" size="16" class="pick form-control" type="text" value="" placeholder="Select Date and Time" required>
+		                    <input name="event_date" size="16" class="pick form-control" type="text" value="<?php echo $edate; ?>" required>
 		                  </div>
 
 		                  <div class="row">
 		                    <div class="col">
 		                        <label class="form-group custom-control-inline" for="exampleFormControlTextarea1">Ticket Price:</label>
 		                        <div class="custom-control custom-radio custom-control-inline form-group">
-		                            <input type="radio" id="customRadioInline1" name="free_paid" class="custom-control-input" value="free" onclick="hidePriceInput()" required>
+		                            <input type="radio" <?php echo ($etype=='free')?'checked':'' ?> id="customRadioInline1" name="free_paid" class="custom-control-input" value="free" onclick="hidePriceInput()" required>
 		                            <label class="custom-control-label" for="customRadioInline1">Free</label>
 		                        </div>
 		                        <div class="custom-control custom-radio custom-control-inline">
-		                            <input type="radio" id="customRadioInline2" value="paid" name="free_paid" class="custom-control-input" onclick="showPriceInput()">
+		                            <input type="radio" <?php echo ($etype=='paid')?'checked':'' ?> id="customRadioInline2" value="paid" name="free_paid" class="custom-control-input" onclick="showPriceInput()">
 		                            <label class="custom-control-label" for="customRadioInline2">Paid</label>
 		                        </div>
 		                    </div>
 
-		                    <div class="col" style="display: none;" id="priceInput">
+		                    <div class="col" style="display: flex;" id="priceInput">
 		                        <div class="input-group form-group" >
 		                            <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
 		                                <div class="">GHS:</div>                        
 		                            </div>
-		                            <input name="ticket_price" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1.00" value="0.00" min="1">
+		                            <input name="ticket_price" type="number" class="form-control" id="ticket_price" aria-describedby="emailHelp" placeholder="" value="<?php echo $tick; ?>" min="" readonly>
 		                        </div>
 
 		                        <div class="input-group form-group" id="priceInput">
 		                            <div class="input-group-prepend date form_datetime" data-date-format="d-m-Y">
 		                                <small class="">QTY:</small>                        
 		                            </div>
-		                            <input name="ticket_quantity" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="1" value="0" min="1">
+		                            <input name="ticket_quantity" type="number" class="form-control" id="ticket_quantity" aria-describedby="emailHelp" placeholder="" value="<?php echo $ticket_qty; ?>" min="" readonly>
 		                        </div>                              
 		                    </div>
 
@@ -184,12 +259,12 @@
 
 		                    <div class="form-group">
 		                        <label>Select Event Poster <small>(This helps promote your event better).</small></label>
-		                        <input name="picture_upload" type="file" class="form-control">
+		                        <input name="picture_upload" type="file" class="form-control" value="../media/images/<?php echo $image; ?>">
 		                     </div>
 
 		                     <div class="form-group">
 		                        <label>Select Video Advert <small>(This helps promote your event better).</small></label>
-		                        <input name="video_upload" type="file" class="form-control">
+		                        <input name="video_upload" type="file" class="form-control" value="../media/videos/test.php">
 		                     </div>
 
 		                    <button name="update_event" type="submit" class="btn btn-primary" style="float: right;">Update</button>
@@ -289,10 +364,12 @@
 
  		});
  		function showPriceInput(){
-	      document.getElementById('priceInput').style.display ='flex';
+	      document.getElementById('ticket_price').readOnly=false;
+	      document.getElementById('ticket_quantity').readOnly=false;
 	    }
 	    function hidePriceInput(){
-	      document.getElementById('priceInput').style.display = 'none';
+	      document.getElementById('ticket_price').readOnly=true;
+	      document.getElementById('ticket_quantity').readOnly=true;
 	    }
 	    //-----------------------------------------------------------
 	    $('.time').flatpickr({
