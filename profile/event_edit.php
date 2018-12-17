@@ -145,6 +145,8 @@
         $ticket_price = $_POST['ticket_price'];
         $ticket_quantity = $_POST['ticket_quantity'];
 
+        // $event_description = mysqli_real_escape_string($event_description);
+
         if ($free_paid=='free') {
         	$ticket_quantity=0;
         	$tick=0.00;

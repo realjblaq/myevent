@@ -1,5 +1,7 @@
 <?php 
 	include 'config/connection.php';
+	// session_start();
+	// $session_id = $_SESSION['uid'];
 	$fid = '';
 	if ($_GET["id"]) {
 		$fid = $_GET["id"];
@@ -22,6 +24,7 @@
 		$ticket_price = $erow['ticket_price'];
 		$_SESSION['eid'] = $eid;	
 		$tick = $ticket_price;
+
 
 		$v='';
 
@@ -117,7 +120,30 @@
         exit;
     }
 }
+//get the user (event creator)-----------------------------------------------------------------------
+// $use_sql=mysqli_query($conn, "SELECT uid FROM events WHERE eid='$fid'");
+// $rowe = mysqli_fetch_assoc($use_sql);
+// $uid = $rowe['uid'];
 
+
+///for user name---------------------------------------------------------------------
+$user_sql=mysqli_query($conn, "SELECT * FROM users WHERE uid='$uid'");
+$row = mysqli_fetch_assoc($user_sql);
+$username =$row['username'];
+$fname =$row['fname'];
+$lname =$row['lname'];
+$email =$row['email'];
+$gender =$row['gender'];
+$phone = $row['phone'];
+$profession = $row['profession'];
+$profile_pic = $row['profile_pic'];
+$linkedin = $row['linkedin'];
+$facebook = $row['facebook'];
+$twitter = $row['twitter'];
+$instagram = $row['instagram'];
+
+//get profile picture---------------------------------------------------
+$image_src = "media/profile_pictures/".$profile_pic;
 
 ?>
 
@@ -153,7 +179,7 @@
 
 		<a class="btn btn-primary btn-sm my-2 my-sm-0" href="index.php"><i class="fa fa-home"></i> Back to Homepage</a>
 
-		<a class="btn btn-primary btn-sm my-2 my-sm-0" href="authentication/login.php"><i class="fa fa-plus"></i> Create Event</a>
+		<a class="btn btn-primary btn-sm my-2 my-sm-0" href="profile/dashboard.php"><i class="fa fa-plus"></i> Create Event</a>
 
 
      <form class="form-inline my-2 my-lg-0" style="color: white;">
@@ -239,11 +265,11 @@
 										<br>
 										<br>
 										<br>
-										<div class="card display" style="min-width: 623px;">
+										<div class="card" style="min-width: 623px;">
 											<div class="card-body">
-												<h5>
+												<p style="">
 													<?php echo $about;?>
-												</h5>
+												</p>
 											</div>
 										</div>
 										<br>
@@ -321,15 +347,15 @@
 									<div class="container jumbotron" style="display: none;" id="buy">
 										<h5 class="center">Buy Tickets For This Event</h5>
 											<br>
-										<form method="post" action="">						  
+										<form method="post" action="event_page.php">						  
 										  <div class="form-row">
 											    <div class="form-group col-md-6">
 											      <small for="inputEmail4">Full Name</small>
-											      <input type="email" class="form-control" id="inputEmail4" placeholder="Enter your full name">
+											      <input type="email" class="form-control" id="inputEmail4" placeholder="Enter your full name" name="email">
 											    </div>
 											    <div class="form-group col-md-6">
 											      <small for="inputPassword4">Quantity</small>
-											      <input type="number" class="form-control" id="inputPassword4" placeholder="" value="1" min="1">
+											      <input type="number" class="form-control" id="inputPassword4" placeholder="" value="" min="1" name="qty">
 											    </div>
 											</div>
 											<div class="wrapper">
@@ -349,15 +375,15 @@
 											<div class="form-row">
 											    <div class="form-group col-md-6">
 												  <small for="inputPassword4">Mobile money number</small>
-												  <input type="text" class="form-control" id="mobile" placeholder="Mobile number">
+												  <input type="text" class="form-control" id="mobile" placeholder="Mobile number" name="mobile_number">
 												</div>
 												<div class="form-group col-md-6">
 												  <small for="inputPassword4">Email (Provide a correct email address)</small>
-												  <input type="email" class="form-control" id="mobile" placeholder="Email">
+												  <input type="email" class="form-control" id="mobile" placeholder="Email" name="email">
 												</div>
 											</div>
 											<div class="wrapper">
-										    	<button type="submit" class="btn btn-primary">Buy</button>
+										    	<button type="submit" class="btn btn-primary" name="buy">Buy</button>
 											</div>
 										</form>
 									</div>
@@ -431,22 +457,23 @@
 										<div class="container">
 										  <div class="row">
 										    <div class="col-md-6 img">
-										      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvzOpl3-kqfNbPcA_u_qEZcSuvu5Je4Ce_FkTMMjxhB-J1wWin-Q"  alt="" class="img-rounded">
+										      <img src="<?php echo $image_src; ?>"  alt="profile picture" class="rounded-circle" width="200" height="200">
 										    </div>
 										    <div class="col-md-6 details">
 										      <blockquote>
-										        <h5>Fiona Gallagher</h5>
-										      	<span> <i class="fa fa-facebook"></i>Username: fiona</span><br>
-										        <small><cite title="Source Title">Chicago, United States of America  <i class="icon-map-marker"></i></cite></small>
+										        <h5><?php echo $fname.' '.$lname; ?></h5>
+										      	<span>Username: @<?php echo $username; ?></span><br>
+										        <small><cite title="Source Title"><?php echo $profession; ?>  <i class="icon-map-marker"></i></cite></small>
 										      </blockquote>
 										      <p>
-										        fionagallager@shameless.com <br>
-										        www.bootsnipp.com <br>
-										        +233254569874
+										        <?php echo $email; ?> <br>
+										        <?php echo $phone; ?>
 										      </p>
-										      <span> <i class="fa fa-facebook"></i>Facebook: @fiona</span><br>
-										      <span> <i class="fa fa-facebook"></i>Twitter: @fiona</span><br>
-										      <span> <i class="fa fa-facebook"></i>Instagram: @fiona</span>
+										      <span> <img src="img/facebook.png" width="20"> <br><?php echo $facebook; ?></span><br>
+										      <span> <img src="img/twitter.png" width="20"> <br><?php echo $twitter; ?></span><br>
+										      <span> <img src="img/instagram.png" width="20"> <br><?php echo $instagram; ?></span><br>
+										      <span> <img src="img/linkedin.png" width="20"> <br><?php echo $linkedin; ?></span><br>
+										      
 										    </div>
 										  </div>
 										</div>

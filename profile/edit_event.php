@@ -193,16 +193,16 @@ $listx='';
                     </ul>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="pim.php">Personal Info</a>
                 </li>
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reports</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li class="act">
-                            <a href="#">Page 1</a>
+                            <a href="attenders.php"><i class="fa fa-list-ul"></i> Registered Addenders</a>
                         </li>
                         <li>
-                            <a href="#">Page 2</a>
+                            <a href="ticket_monitor.php"><i class="fa fa-ticket-alt"></i> Ticket Monitoring</a>
                         </li>
                         <li>
                             <a href="#">Page 3</a>

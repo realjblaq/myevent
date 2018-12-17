@@ -34,7 +34,7 @@
 						 <p >Please login with your <strong style="color: green;">username</strong>  and <strong style="color: green;">password</strong>.</p>
 					</span>
 					<span class="login100-form-title p-b-48">
-						<a href="../index.php"><img src="../img/logo min.png" style="width: 100px;"></a>
+						<a href="../index.php"><img src="../img/logo_min.png" style="width: 100px;"></a>
 					</span>
 
 					<?php echo $error; ?>
