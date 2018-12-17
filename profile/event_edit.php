@@ -275,7 +275,7 @@
 			</div>
 			<!-- Program outline----------------------------------------------------- -->
 			<div class="col-4" style="border-right: 1px solid #bebebe;">
-				<span class="row alert" style="border-bottom: 1px solid #bebebe;">PROGRAM OUTLINE</span>
+				<span class="row alert" style="border-bottom: 1px solid #bebebe;">ADD PROGRAM OUTLINE</span>
 				<span class="row container">
 					<form method="post" action="event_edit.php?event_id=<?php echo $_GET['event_id']; ?>" style="margin-bottom: 14px;"> 
 						<div class="form-row">

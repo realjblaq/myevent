@@ -147,7 +147,7 @@
 	<nav class="navbar navbar-dark bg-dark sticky" id="navbar"">
 
 	  <a class="navbar-brand" href="index.php">
-	  	<img src="img/logo min.png" width="35" height="35" alt="">
+	  	<img src="img/logo_min.png" width="35" height="35" alt="">
 	    <img src="img/logowhite.png" width="150" height="30" alt="">
 	  </a>
 
@@ -407,7 +407,7 @@
 									<!-- live feed -->
 									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 										<div class="embed-responsive embed-responsive-16by9">
-											<iframe width="560" height="315" src="https://www.youtube.com/embed/SMkDt2Azw5c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+											<iframe width="560" height="315" src="https://www.youtube.com/embed/B4eRJ6QeCzk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 										  <!-- <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe> -->
 										</div>
 									</div>

@@ -131,7 +131,7 @@ while ($erow = mysqli_fetch_assoc($event_sql)) {
 	<nav class="navbar navbar-dark bg-dark sticky" id="navbar"">
 
 	  <a class="navbar-brand" href="#">
-	  	<img src="img/logo min.png" width="35" height="35" alt="">
+	  	<img src="img/logo_min.png" width="35" height="35" alt="">
 	    <img src="img/logowhite.png" width="150" height="30" alt="">
 	  </a>
 

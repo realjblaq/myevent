@@ -134,7 +134,7 @@ include('../authentication/session.php');
                     </ul>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="pim.php">Personal Info</a>
                 </li>
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
@@ -151,7 +151,7 @@ include('../authentication/session.php');
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Portfolio</a>
+                    <a href="#">Personal Information</a>
                 </li>
                 <li>
                     <a href="#">Contact</a>
