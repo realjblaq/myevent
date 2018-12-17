@@ -1,90 +1,68 @@
 <?php 
 include('../authentication/session.php');
 
+$event_sqlx=mysqli_query($conn, "SELECT * FROM events WHERE uid = '$session_id' AND etype='paid' ORDER BY date_created DESC");
+$listx='';    
+    while ($erowx = mysqli_fetch_assoc($event_sqlx)) {
+        $eid =  $erowx['eid'];
+        // $uid =  $erowx['uid'];
+        // $etype = $erowx['etype'];
+        $enamex =  $erowx['ename'];
+        // $about = $erow['about'];
+        // $image =  $erow['image'];
+        // $video =  $erow['video'];
+        // $location =  $erow['location'];
+        // $edate =  $erow['edate'];
+        $date_createx =  $erowx['date_created'];
+        // $ticket_qty = $erow['ticket_qty'];
+        // $ticket_price = $erow['ticket_price'];
+        // $_SESSION['eid'] = $eid;    
+        // $tick = $ticket_price;
 
-// echo $login_session;
-    $event_post_message = '';
-    $passerror = '';
-    $picturename = '';
-    $videoname = '';
-    if(isset($_POST['publish_event']))
-    {
-            $event_name = $_POST['event_name'];
-            $event_venue = $_POST['event_venue'];
-            $event_description = $_POST['event_description'];
-            $event_date = $_POST['event_date'];
-            $free_paid = $_POST['free_paid'];
-            $ticket_price = $_POST['ticket_price'];
-            $ticket_quantity = $_POST['ticket_quantity'];
-            
-            //-----------------------------------------------------------------------------
-
-            //for poster
-            $targetfolderp = "../media/images/";
-
-            $picturename = basename($_FILES['picture_upload']['name']);
-            $pexplode = explode(".", $picturename);
-            $ptype = end($pexplode);
-            $ptype = strtolower($ptype);
-            $picturename = md5($picturename.time().$session_id).'.'.$ptype;//make the picture name unique
-
-
-            $targetfolderp = $targetfolderp . $picturename ;
-            $ok=1;
-            $file_type=$_FILES['picture_upload']['type'];
-            if ($file_type=="image/png" || $file_type=="image/gif" || $file_type=="image/jpeg"){
-                move_uploaded_file($_FILES['picture_upload']['tmp_name'], $targetfolderp);
-                                     
-            }else {
-             echo "You may only JPEGs or GIF files.<br>";
-            }      
-
-            //for video advert
-            $targetfolderv = "../media/videos/";
-
-            $videoname = basename($_FILES['video_upload']['name']);
-            $vexplode = explode(".", $videoname);
-            $vtype = end($vexplode);
-            $vtype = strtolower($vtype);
-            $videoname = md5($videoname.time().$session_id).'.'.$vtype;
-
-            $targetfolderv = $targetfolderv . $videoname ;
-            $ok2=1;
-            $file_type2=$_FILES['video_upload']['type'];
-            if ($file_type2=="video/mp4"){
-                move_uploaded_file($_FILES['video_upload']['tmp_name'], $targetfolderv);
-            }else {
-             echo "You may only upload videos";
-            }  
-            
-            //-----------------------------------------------------------------------------
-
-            //$session_id
-            $sql = "INSERT INTO events (uid, ename, etype, about, image, video, location, edate, ticket_qty, ticket_price)
-            VALUES ('".$session_id."','".$event_name."','".$free_paid."','".$event_description."','".$picturename."','".$videoname."','".$event_venue."','".$event_date."','".$ticket_quantity."','".$ticket_price."')";
-
-            $result = mysqli_query($conn,$sql);
-           
-
-            if ($result) {
-
-
-                $event_post_message = '<script type="text/javascript">
-                                setTimeout(function () {
-                                    swal("Good job!","You have published your event.","success").then( function(val) {
-                                        if (val == true) window.location.href = \'dashboard.php\';
-                                    });
-                                }, 200);  
-                            </script>';
-            }
-            else{
-                $event_post_message = "<script type='text/javascript'>swal('Error!', 'Something went wroing!', 'error')</script>";        
-            }
+        $listx .='<option value="'.$eid.'">'.strtoupper($enamex).'</option>';
     }
-    // else{
-    //         $event_post_message = '<p style="color: red; margin-bottom: 5px;">Failed. Passwords do not match!</p>';         
-    //     }
 
+$event_id = '';
+$list='';
+if (isset($_POST['check'])) {
+    $event_id= $_POST['event'];
+
+    $reg_sqlx=mysqli_query($conn, "SELECT * FROM evaluation WHERE eid = '$event_id'");
+    $list='';    
+    $no=0;
+    while ($erow = mysqli_fetch_assoc($reg_sqlx)) {
+        $name = $erow['name'];
+        $email = $erow['email'];
+        $rating = $erow['rating'];
+        $comment = $erow['comment'];
+        $no++;
+        $list.='<tr>
+                  <th scope="row">'.$no.'</th>
+                  <td>'.$name.'</td>
+                  <td>'.$email.'</td>
+                  <td>'.$rating.'</td>
+                  <td>'.$comment.'</td>
+                </tr>';
+    }
+}
+$event_ids = '';
+$mess='';
+if (isset($_POST['activate'])) {
+    $event_ids= $_POST['event'];
+
+    $updat_sqls = "UPDATE events SET evaluate='1' WHERE eid=$event_ids";
+        if ($conn->query($updat_sqls) === TRUE) {
+            $mess = '<script type="text/javascript">
+                    swal("Evaluation form has been activated for this event!", {
+                      icon: "success",
+                      button: true,
+                      timer: false,
+                    });
+                    </script>';
+        }
+}
+// echo $event_id;
+// exit();
 ?>
 <!DOCTYPE html>
 <html>
@@ -101,13 +79,12 @@ include('../authentication/session.php');
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
 	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
 	<link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
-	<link rel="stylesheet" type="text/css" href="../css/flatpickr.css">
+    <link rel="stylesheet" type="text/css" href="../css/flatpickr.css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-toggle.min.css">
     <script type="text/javascript" src="../js/sweetalert.min.js"></script>
 </head>
 <body>
-
-    <?php echo $event_post_message; ?>
-
+<?php echo $mess; ?>
 	<div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
@@ -202,11 +179,42 @@ include('../authentication/session.php');
             <!-- nav end -->
 <!-- lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll -->
 <!--<?php include 'navcontent.php'; ?> -->
+    
+    <div class="content small">
+        <h5>Feedbacks from Event Attenders</h5> <br>
+       Select a paid to view ticket information.
+       <div class="row">
+           <div class="col-4">
+                <form method="POST" action="feedback.php">
+                   <select class="form-control form-control-sm" name="event">
+                      <?php echo $listx; ?>
+                    </select>
+                    <br>
+                    <button class="btn btn-secondary btn-sm" name="activate" style="float: left;">Activate Evaluation Form</button>
 
-    <div class="content">
-        <h2 class="">Hi <b><?php echo ucwords($login_session); ?></b>, welcome to your dashboard.</h2>
-        <p class=""> <i class="fa fa-hand-point-left fa-lg bounce"></i> Click on <strong>Manage Event</strong> on the left menu to add your event</p>
-        <img src="../img/dashpic2.png" width="450"><br>
+                    <button class="btn btn-primary btn-sm" name="check" style="float: right;">Read Feedbacks</button>
+                    <!-- <input type="checkbox" data-toggle="toggle"/> -->
+                </form>
+           </div>
+           <div class="col">
+
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Rating</th>
+                      <th scope="col">Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php echo $list; ?>
+                    
+                  </tbody>
+                </table>
+           </div>
+       </div>
     </div>
            
     </div> 
@@ -218,7 +226,8 @@ include('../authentication/session.php');
 	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../js/bootstrap.bundle.js"></script>
 	<script type="text/javascript" src="../js/jquery.mCustomScrollbar.js"></script>
-	<script type="text/javascript" src="../js/flatpickr.js"></script>
+    <script type="text/javascript" src="../js/flatpickr.js"></script>
+	<script type="text/javascript" src="../js/bootstrap-toggle.min.js"></script>
     
     <script type="text/javascript">
         $(document).ready(function () {
@@ -233,40 +242,13 @@ include('../authentication/session.php');
             });
         });
 
-//-----------------------------------------------------------
- //    window.onscroll = function() {myFunction()};
 
-	// var navbar = document.getElementById("navtop");
-	// var sticky = navbar.offsetTop;
-
-	// function myFunction() {
-	//   if (window.pageYOffset >= sticky) {
-	//     navbar.classList.add("sticky")
-	//   } else {
-	//     navbar.classList.remove("sticky");
-	//   }
-	// }
-//------------------------------------------------------------
 	$('li.collapse li').click(function() {
 		$(this).parent().find('li').removeClass('act');
 		$(this).addClass('linkactive');
     // $('li').removeClass();
     // $(this).parent().addClass('linkactive');
 	});
-
-//-----------------------------------------------------------
-	$('.pick').flatpickr({
-		enableTime: true,
-	    dateFormat: "Y-m-d H:i",
-	    minDate: "today",
-	});
-//-----------------------------------------------------------
-	function showPriceInput(){
-	  document.getElementById('priceInput').style.display ='flex';
-	}
-	function hidePriceInput(){
-	  document.getElementById('priceInput').style.display = 'none';
-	}
 
     </script>
 

@@ -104,7 +104,8 @@ if (isset($_POST['check'])) {
                             <a href="ticket_monitor.php"><i class="fa fa-ticket-alt"></i> Ticket Monitoring</a>
                         </li>
                         <li>
-                            <a href="#">Page 3</a>
+                            <a href="feedback.php"><i class="fa fa-comments"></i> Events Feedback</a>
+                            
                         </li>
                     </ul>
                 </li>

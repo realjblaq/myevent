@@ -7,6 +7,7 @@
 		$fid = $_GET["id"];
 	}
 
+	$evaluation_form='';
 
 	$event_sql=mysqli_query($conn, "SELECT * FROM events WHERE eid = '$fid'");
 	while ($erow = mysqli_fetch_assoc($event_sql)) {
@@ -22,9 +23,80 @@
 		$date_create =  $erow['date_created'];
 		$ticket_qty = $erow['ticket_qty'];
 		$ticket_price = $erow['ticket_price'];
+		$evaluate = $erow['evaluate'];
 		$_SESSION['eid'] = $eid;	
 		$tick = $ticket_price;
 
+		if ($evaluate==1) {
+			$evaluation_form='<section class="small jumbotron" style="display: block;">
+					<form action="event_page.php?id='.$fid.'" method="post">
+						<b style="">We would like to know what you think about this event.</b>
+						<br><br>
+					  <div class="row">
+
+					  	<div class="col-sm-2"></div>
+
+					    <div class="col-sm-4">
+
+					      <input type="text" class="form-control form-control-sm" placeholder="Your name" name="name" required>
+					    </div>
+					    <div class="col-sm-4">
+					      <input type="email" class=" form-control form-control-sm" placeholder="Email address" name="emails" required>
+					    </div>
+
+					  	<div class="col-sm-2"></div>
+					   </div> <br>
+					   <div class="row">
+					  	<div class="col-sm-2"></div>
+					    <div class="col-sm-4" >
+					      <b>How would you rate this event?</b>
+					    </div>
+					    <div class="col-sm-4" style="text-align: left;">
+					    	<div class="custom-control custom-radio">
+						  <input type="radio" id="customRadio1" name="rating" class="custom-control-input" value="excellent" required>
+						  <label class="custom-control-label" for="customRadio1">Excellent</label>
+						</div>
+						<div class="custom-control custom-radio">
+						  <input type="radio" id="customRadio2" name="rating" class="custom-control-input" value="good">
+						  <label class="custom-control-label" for="customRadio2">Good</label>
+						</div>
+						<div class="custom-control custom-radio">
+						  <input type="radio" id="customRadio3" name="rating" class="custom-control-input" value="fair">
+						  <label class="custom-control-label" for="customRadio3">Fair</label>
+						</div>
+						<div class="custom-control custom-radio">
+						  <input type="radio" id="customRadio4" name="rating" class="custom-control-input" value="poor">
+						  <label class="custom-control-label" for="customRadio4">Poor</label>
+						</div>
+						<div class="custom-control custom-radio">
+						  <input type="radio" id="customRadio5" name="rating" class="custom-control-input" value="terrible">
+						  <label class="custom-control-label" for="customRadio5">Terrible</label>
+						</div>
+					    </div>
+					    
+					  	<div class="col-sm-2"></div>
+
+					   </div>
+					   <br>
+
+					   <div class="row">
+					  	<div class="col-sm-2"></div>
+					    <div class="col-sm-8" style="text-align: left;">
+					    	<b>Do you have any other comments for us?</b>
+					      <textarea type="text" class="form-control form-control-sm" placeholder="First name" name="comment"></textarea>
+					      <br>
+					      <button class="btn btn-primary btn-sm" type="submit" style="float: left;" name="submit">Submit</button>
+					    </div>
+					    <div class="col-sm">
+					      <!-- <input type="text" class=" form-control form-control-sm" placeholder="Last name"> -->
+					    </div>
+
+					  	<div class="col-sm-2"></div>
+					   </div> 
+					   
+					</form>
+				</section>';
+		}
 
 		$v='';
 
@@ -145,6 +217,25 @@ $instagram = $row['instagram'];
 //get profile picture---------------------------------------------------
 $image_src = "media/profile_pictures/".$profile_pic;
 
+
+//activate evaluation form----------------------------------------------
+$name = '';
+$emails = '';
+$rating = '';
+$comment = '';
+if (isset($_POST['submit'])) {
+	$name =  $_POST['name'];
+	$emails =  $_POST['emails'];
+	$rating =  $_POST['rating'];
+	$comment =  $_POST['comment'];
+
+	$sql = "INSERT INTO evaluation (eid, name, email, rating, comment)
+	   	 	VALUES ('".$fid."','".$name."','".$emails."','".$rating."','".$comment."')";
+
+	    	$result = mysqli_query($conn,$sql);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -237,7 +328,10 @@ $image_src = "media/profile_pictures/".$profile_pic;
 			<div class="col"></div>
 			<div class="col-9 center alert">
 				<h1 class="display-4"><strong><?php echo strtoupper($ename);?></strong></h1>
-
+				<!-- ------------------------------------------------------------------------------------------ -->
+				<?php echo $evaluation_form; ?>
+				<!--  -->
+				<!-- ------------------------------------------------------------------------------------------ -->
 				
 				<section id="tabs">
 							<div class="container">
@@ -433,7 +527,7 @@ $image_src = "media/profile_pictures/".$profile_pic;
 									<!-- live feed -->
 									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 										<div class="embed-responsive embed-responsive-16by9">
-											<iframe width="560" height="315" src="https://www.youtube.com/embed/B4eRJ6QeCzk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+											<iframe width="560" height="315" src="https://www.youtube.com/embed/pg-dBpRcar0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 										  <!-- <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe> -->
 										</div>
 									</div>
