@@ -211,7 +211,7 @@ $listx='';
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Portfolio</a>
+                    <a href="announcement.php">Announcement <i class="fa fa-bullhorn"></i></a>
                 </li>
                 <li>
                     <a href="#">Contact</a>

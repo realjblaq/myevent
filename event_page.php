@@ -8,6 +8,7 @@
 	}
 
 	$evaluation_form='';
+	$announcement_form='';
 
 	$event_sql=mysqli_query($conn, "SELECT * FROM events WHERE eid = '$fid'");
 	while ($erow = mysqli_fetch_assoc($event_sql)) {
@@ -24,8 +25,21 @@
 		$ticket_qty = $erow['ticket_qty'];
 		$ticket_price = $erow['ticket_price'];
 		$evaluate = $erow['evaluate'];
+		$announcement = $erow['announcement'];
+		$the_announcement = $erow['the_announcement'];
 		$_SESSION['eid'] = $eid;	
 		$tick = $ticket_price;
+
+		if ($announcement==1) {
+			$announcement_form='<div class="container">
+			<div class="row">
+				<div class="alert alert-success alert-dismissible" role="alert" style="width: 100%;">
+			  	<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			  	<strong><i class="fa fa-warning"></i> Announcement!</strong> <marquee><p style="font-size:18pt; color:black;">'.$the_announcement.'</p></marquee>
+				</div>
+			</div>
+		</div>';
+		}
 
 		if ($evaluate==1) {
 			$evaluation_form='<section class="small jumbotron" style="display: block;">
@@ -321,9 +335,11 @@ if (isset($_POST['submit'])) {
 
 	</script>
 
-
 	<div class="container ">
+			<!-- ---------------------------------------------------------------------scroll announcement -->
 
+		<?php echo $announcement_form; ?>
+<!-- ----------------------------------------------------------------------------------------- -->
 		<div class="row">
 			<div class="col"></div>
 			<div class="col-9 center alert">

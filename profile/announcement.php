@@ -27,21 +27,73 @@ $list='';
 if (isset($_POST['check'])) {
     $event_id= $_POST['event'];
 
-    $reg_sqlx=mysqli_query($conn, "SELECT * FROM register_event WHERE eid = '$event_id'");
+    $reg_sqlx=mysqli_query($conn, "SELECT * FROM evaluation WHERE eid = '$event_id'");
     $list='';    
     $no=0;
     while ($erow = mysqli_fetch_assoc($reg_sqlx)) {
-        $fullname = $erow['fullname'];
+        $name = $erow['name'];
         $email = $erow['email'];
-        $expectation = $erow['expectation'];
+        $rating = $erow['rating'];
+        $comment = $erow['comment'];
         $no++;
         $list.='<tr>
                   <th scope="row">'.$no.'</th>
-                  <td>'.$fullname.'</td>
+                  <td>'.$name.'</td>
                   <td>'.$email.'</td>
-                  <td>'.$expectation.'</td>
+                  <td>'.$rating.'</td>
+                  <td>'.$comment.'</td>
                 </tr>';
     }
+}
+$event_ids = '';
+$mess='';
+if (isset($_POST['activate'])) {
+    $event_ids= $_POST['event'];
+
+    $updat_sqls = "UPDATE events SET announcement='1' WHERE eid=$event_ids";
+        if ($conn->query($updat_sqls) === TRUE) {
+            $mess = '<script type="text/javascript">
+                    swal("Announcement is on!", {
+                      icon: "success",
+                      button: true,
+                      timer: false,
+                    });
+                    </script>';
+        }
+}
+
+if (isset($_POST['deactivate'])) {
+    $event_ids= $_POST['event'];
+
+    $updat_sqls = "UPDATE events SET announcement='0' WHERE eid=$event_ids";
+        if ($conn->query($updat_sqls) === TRUE) {
+            $mess = '<script type="text/javascript">
+                    swal("Announcement is off!", {
+                      icon: "error",
+                      button: true,
+                      timer: false,
+                    });
+                    </script>';
+        }
+}
+
+$announcement = '';
+$the_event='';
+if (isset($_POST['announce'])) {
+    $the_event= $_POST['event'];
+    $announcement= $_POST['announcement'];
+
+    $updat_sqls = "UPDATE events SET the_announcement='$announcement' WHERE eid=$the_event";
+        if ($conn->query($updat_sqls) === TRUE) {
+            $mess = '<script type="text/javascript">
+                    swal("Announcement sent!", {
+                      icon: "success",
+                      button: true,
+                      timer: false,
+                    });
+                    </script>';
+        }    
+
 }
 // echo $event_id;
 // exit();
@@ -49,24 +101,25 @@ if (isset($_POST['check'])) {
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MYeVENT-Dashboard</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
+    <title>MYeVENT-Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<link rel="icon" type="image/png" href="../favicon.png"/>
-	<link rel="stylesheet" type="text/css" href="../fontawesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.min.css">
- 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
-	<link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
-	<link rel="stylesheet" type="text/css" href="../css/flatpickr.css">
+    <link rel="icon" type="image/png" href="../favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../css/flatpickr.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-toggle.min.css">
     <script type="text/javascript" src="../js/sweetalert.min.js"></script>
 </head>
 <body>
-
-	<div class="wrapper">
+<?php echo $mess; ?>
+    <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header" >
@@ -105,7 +158,6 @@ if (isset($_POST['check'])) {
                         </li>
                         <li>
                             <a href="feedback.php"><i class="fa fa-comments"></i> Events Feedback</a>
-                            
                         </li>
                     </ul>
                 </li>
@@ -154,7 +206,7 @@ if (isset($_POST['check'])) {
                             
                         </ul>
                         <div class="nav-item dropdown" ></div>
-   	
+    
                     </div>
                 </div>
             </nav>
@@ -163,48 +215,57 @@ if (isset($_POST['check'])) {
 <!--<?php include 'navcontent.php'; ?> -->
     
     <div class="content small">
-        <h5>Registered Attenders</h5> <br>
-       Select an event to view who is attending.
+        <h5>Announcement</h5> <br>
+       Select an event to add announcement.
        <div class="row">
            <div class="col-4">
-                <form method="POST" action="attenders.php">
+                <form method="POST" action="announcement.php">
                    <select class="form-control form-control-sm" name="event">
                       <?php echo $listx; ?>
                     </select>
                     <br>
-                    <button class="btn btn-primary btn-sm" name="check" style="float: right;">Check</button>
+                    <label>Input announcement here and press <span style="color: blue;">blue button</span> to show it!</label>
+                    <textarea class="form-control form-control-sm" name="announcement" placeholder="Announcement goes here"></textarea>
+                    <br>
+                    <button class="btn btn-success btn-sm" name="activate" style="float: left;">On Announcement</button>
+                    <button class="btn btn-danger btn-sm" name="deactivate" style="float: right;">Off Announcement</button>
+                    <br><hr class="hr"></hr>
+                    <button class="btn btn-primary btn-sm" name="announce" style="float: right;">Submit Announcement</button>
+                    <!-- <input type="checkbox" data-toggle="toggle"/> -->
                 </form>
            </div>
            <div class="col">
 
-                <table class="table table-hover">
+                <!-- <table class="table table-hover">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Full Name</th>
+                      <th scope="col">Name</th>
                       <th scope="col">Email</th>
-                      <th scope="col">Expectations</th>
+                      <th scope="col">Rating</th>
+                      <th scope="col">Comment</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php echo $list; ?>
                     
                   </tbody>
-                </table>
+                </table> -->
            </div>
        </div>
     </div>
            
     </div> 
     <!-- whole page end -->
-	
-	<script type="text/javascript" src="../js/jquery.js"></script>
-	<script type="text/javascript" src="../js/sweetalert.min.js"></script>
-	<script type="text/javascript" src="../js/popper.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.bundle.js"></script>
-	<script type="text/javascript" src="../js/jquery.mCustomScrollbar.js"></script>
-	<script type="text/javascript" src="../js/flatpickr.js"></script>
+    
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="../js/jquery.mCustomScrollbar.js"></script>
+    <script type="text/javascript" src="../js/flatpickr.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-toggle.min.js"></script>
     
     <script type="text/javascript">
         $(document).ready(function () {
@@ -220,16 +281,16 @@ if (isset($_POST['check'])) {
         });
 
 
-	$('li.collapse li').click(function() {
-		$(this).parent().find('li').removeClass('act');
-		$(this).addClass('linkactive');
+    $('li.collapse li').click(function() {
+        $(this).parent().find('li').removeClass('act');
+        $(this).addClass('linkactive');
     // $('li').removeClass();
     // $(this).parent().addClass('linkactive');
-	});
+    });
 
     </script>
 
     
-	
+    
 </body>
 </html>

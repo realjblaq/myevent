@@ -128,7 +128,7 @@ if (isset($_POST['activate'])) {
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Personal Information</a>
+                    <a href="announcement.php">Announcement <i class="fa fa-bullhorn"></i></a>
                 </li>
                 <li>
                     <a href="#">Contact</a>

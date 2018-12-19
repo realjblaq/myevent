@@ -1,18 +1,21 @@
 <?php
+header('Content-Type: image/png');
+  require 'vendor/autoload.php';
+  use Endroid\QrCode\QrCode;
+if (isset($_POST['submit'])) {
+   
 
-  // header('Content-Type: image/png');
-  // require 'vendor/autoload.php';
-  // use Endroid\QrCode\QrCode;
+  $qrcode = new QrCode(urldecode('http://www.google.com'));
 
-  // $qrcode = new QrCode(urldecode('http://www.google.com'));
+  $targetfolderp = "../media/files/";
+    $targetfolderp = $targetfolderp . basename( $_FILES['fileToUpload']['name']) ;
+    $filename = basename( $_FILES['fileToUpload']['name']);
 
-  // $targetfolderp = "../media/files/";
-  //   $targetfolderp = $targetfolderp . basename( $_FILES['fileToUpload']['name']) ;
-  //   $filename = basename( $_FILES['fileToUpload']['name']);
-
-  // if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetfolderp)){
-  // echo $qrcode->writeString();
-  // die();
+  if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetfolderp)){
+  echo $qrcode->writeString();
+  }
+  die();
+ 
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +32,10 @@
 <body>
   
 
-
- 
+<form method="post">
+ <input type="file" name="fileToUpload"/>
+ <input type="submit" name="submit">
+ </form>
 
 </body>
 
