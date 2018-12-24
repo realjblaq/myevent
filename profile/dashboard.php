@@ -154,7 +154,7 @@ include('../authentication/session.php');
                     <a href="announcement.php">Announcement <i class="fa fa-bullhorn"></i></a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="live.php">Go Live <i class="fa fa-video"></i></a>
                 </li>
             </ul>
 

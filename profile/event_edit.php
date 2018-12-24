@@ -109,6 +109,7 @@
 		$date_create =  $erow['date_created'];
 		$ticket_qty = $erow['ticket_qty'];
 		$ticket_price = $erow['ticket_price'];
+		$template = $erow['template'];
 		$_SESSION['eid'] = $eid;	
 		$tick = $ticket_price;
 
@@ -144,6 +145,7 @@
         $free_paid = $_POST['free_paid'];
         $ticket_price = $_POST['ticket_price'];
         $ticket_quantity = $_POST['ticket_quantity'];
+        $event_temp = $_POST['event_temp'];
 
         // $event_description = mysqli_real_escape_string($event_description);
 
@@ -151,7 +153,7 @@
         	$ticket_quantity=0;
         	$tick=0.00;
         }
-        $updat_sql = "UPDATE events SET ename='$event_name', about='$event_description', edate='$event_date', location='$event_venue', ticket_qty='$ticket_quantity', ticket_price='$ticket_price', etype='$free_paid' WHERE eid=$event_id";
+        $updat_sql = "UPDATE events SET ename='$event_name', about='$event_description', edate='$event_date', location='$event_venue', ticket_qty='$ticket_quantity', ticket_price='$ticket_price', etype='$free_paid', template='$event_temp' WHERE eid=$event_id";
         if ($conn->query($updat_sql) === TRUE) {
         	$fileMessage= '<script type="text/javascript">
 	 				swal("Event updated successfully!", {
@@ -202,6 +204,21 @@
 		                <form class="" method="post" style="padding-right: 5px;">
 
 		                    <div class="row form-group">
+		                    	<div class="col">
+		                            <label for="exampleInputEmail1">Select Template</label>
+		                            <select class="form-control" name="event_temp" value="<?php echo $template; ?>" required>
+		                            	<option value="<?php echo $template; ?>"><?php echo ucfirst($template); ?></option>
+		                            	<option value="birthday">Birthday</option>
+		                            	<option value="church">Church Service</option>
+		                            	<option value="concert">Concert</option>
+		                            	<option value="conference">Conference</option>
+		                            	<option value="funeral">Funeral</option>
+		                            	<option value="meeting">Meeting</option>
+		                            	<option value="party">Party</option>
+		                            	<option value="wedding">Wedding</option>
+		                            	<option value="default">MYeVENT Default</option>
+		                            </select>
+		                        </div>
 
 		                        <div class="col">
 		                            <label for="exampleInputEmail1">Event Name</label>

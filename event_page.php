@@ -3,13 +3,17 @@
 	// session_start();
 	// $session_id = $_SESSION['uid'];
 	$fid = '';
-	if ($_GET["id"]) {
+	if (isset($_GET["id"])) {
 		$fid = $_GET["id"];
 	}
 
 	$evaluation_form='';
 	$announcement_form='';
-
+	$temp ='';
+	$black='black';
+	$white='white';
+	$opacity='';
+	$color='';
 	$event_sql=mysqli_query($conn, "SELECT * FROM events WHERE eid = '$fid'");
 	while ($erow = mysqli_fetch_assoc($event_sql)) {
 		$eid =  $erow['eid'];
@@ -27,8 +31,51 @@
 		$evaluate = $erow['evaluate'];
 		$announcement = $erow['announcement'];
 		$the_announcement = $erow['the_announcement'];
+		$live_stream = $erow['live_stream'];
+		$template = $erow['template'];
+		// echo $template;exit();
+
 		$_SESSION['eid'] = $eid;	
 		$tick = $ticket_price;
+
+		if ($template=='wedding') {
+			$temp = 'weddings3.jpg';
+			$opacity='rgba(255,255,255,0.5)';
+			$color = 'black';
+		}elseif ($template=='funeral') {
+			$temp = 'funeral4.jpg';
+			$opacity='rgba(0,0,0,0.5)';
+			$color = 'white';
+		}elseif ($template=='party') {
+			$temp = 'party.jpg';
+			$opacity='rgba(0,0,0,0.5)';
+			$color = 'white';
+		}elseif ($template=='conference') {
+			$temp = 'conference5.jpg';
+			$opacity='rgba(0,0,0,0.5)';
+			$color = 'white';
+		}elseif ($template=='birthday') {
+			$temp = 'birthday.jpg';
+			$opacity='rgba(255,255,255,0.5)';
+			$color = 'black';
+		}elseif ($template=='church') {
+			$temp = 'church1.jpg';
+			$opacity='rgba(0,0,0,0.5)';
+			$color = 'white';
+		}elseif ($template=='meeting') {
+			$temp = 'meeting.jpg';
+			$opacity='rgba(255,255,255,0.5)';
+			$color = 'black';
+		}elseif ($template=='concert') {
+			$temp = 'concert.jpeg';
+			$opacity='rgba(0,0,0,0.5)';
+			$color = 'white';
+		}elseif ($template=='default') {
+			$temp = '';
+			$black='';
+			$white='';
+			$opacity='';
+		}
 
 		if ($announcement==1) {
 			$announcement_form='<div class="container">
@@ -42,7 +89,7 @@
 		}
 
 		if ($evaluate==1) {
-			$evaluation_form='<section class="small jumbotron" style="display: block;">
+			$evaluation_form='<section class="small jumbotron" style="color:'.$color.'; background:'.$opacity.';">
 					<form action="event_page.php?id='.$fid.'" method="post">
 						<b style="">We would like to know what you think about this event.</b>
 						<br><br>
@@ -124,6 +171,7 @@
 		$ticket = "GHS ".$ticket_price;
 		
 		}else{
+			$ticket_price = 0;
 			$ticket = strtoupper("free");
 		}
 	}
@@ -218,7 +266,7 @@ $row = mysqli_fetch_assoc($user_sql);
 $username =$row['username'];
 $fname =$row['fname'];
 $lname =$row['lname'];
-$email =$row['email'];
+$user_email =$row['email'];
 $gender =$row['gender'];
 $phone = $row['phone'];
 $profession = $row['profession'];
@@ -227,6 +275,7 @@ $linkedin = $row['linkedin'];
 $facebook = $row['facebook'];
 $twitter = $row['twitter'];
 $instagram = $row['instagram'];
+// echo $email; exit();
 
 //get profile picture---------------------------------------------------
 $image_src = "media/profile_pictures/".$profile_pic;
@@ -248,6 +297,40 @@ if (isset($_POST['submit'])) {
 
 	    	$result = mysqli_query($conn,$sql);
 
+}
+//Ticket and mobile MOney--------------------------------------------------------------------------------------
+$full_name='';
+$quantity = '';
+$mobile_money='';
+$mobile_number = '';
+$email = '';
+if (isset($_POST['buy'])) {
+	$full_name=$_POST['full_name'];
+	$quantity = $_POST['quantity'];
+	$mobile_money=$_POST['mobile_money'];
+	$mobile_number = $_POST['mobile_number'];
+	$email = $_POST['email'];
+	$amount = $_POST['cost']*$quantity;
+
+	$wallet_type = 'm';
+	$wallet = $mobile_money;
+	// $amount = '1.00';
+	$description = 'Purchase of '.$ename. ' ticket';
+	$api_key = '2482d7fdea99c531c941cd2f0f42f5a4';
+	// $callback_url = 'http://www.yourwebisteurl.com/callback_file';
+
+	$base_url = "https://www.cediplus.com/api/v2";
+	$base_url_parameters = 'wallet_type='.$wallet_type.'&wallet='.$wallet.'&amount='.$amount.'&description='.$description.'&api_key='.$api_key.'&action=sendbill'; 
+   	$header = array(
+     'http' => array(
+       'method'  => 'POST',
+       'header'  => 'Content-type: application/x-www-form-urlencoded',
+       'content' => $base_url_parameters
+     )
+   );
+   $context = ($header);
+   $result = file_get_contents($base_url, false, $context);
+   echo $result;
 }
 
 ?>
@@ -271,7 +354,7 @@ if (isset($_POST['submit'])) {
 	<!-- <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css"> -->
 	<!-- <link rel="stylesheet" type="text/css" href="css/flatpickr.css"> -->
 </head>
-<body style="margin:auto; margin-top:75px;">
+<body style="margin:auto; margin-top:75px; background-image: url('img/<?php echo $temp; ?>'); color: <?php echo $color; ?>; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
 
 	<?php echo $messagex;?>
 
@@ -375,10 +458,10 @@ if (isset($_POST['submit'])) {
 										<br>
 										<br>
 										<br>
-										<div class="card" style="min-width: 623px;">
+										<div class="card" style="min-width: 623px; background: <?php echo $opacity; ?>;">
 											<div class="card-body">
 												<p style="">
-													<?php echo $about;?>
+													<h6><?php echo $about;?></h6>
 												</p>
 											</div>
 										</div>
@@ -391,7 +474,7 @@ if (isset($_POST['submit'])) {
 										<!-- Button trigger modal -->
 
 										<button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="media/videos/<?php echo $video?>" data-target="#myModal">
-										 <i class="fa fa-video"></i> | Watch the video advert
+										 <i class="fa fa-video"></i>  See video advert
 										</button>
 										<!-- Modal -->
 										<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -416,7 +499,7 @@ if (isset($_POST['submit'])) {
 
 									<hr class="hr"></hr>
 
-									<div>
+									<div class="container jumbotron" style="background: <?php echo $opacity; ?>;">
 										<span>
 											<i class="fa fa-calendar-alt"> </i> <?php echo date("d/m/Y", strtotime($edate)); ?>
 											<span style="margin:0px 0px 50px 50px;"></span>
@@ -431,6 +514,7 @@ if (isset($_POST['submit'])) {
 											Rate: <h5><strong><?php echo $ticket; ?></strong></h5> 							
 										</span>
 										<hr class="hr"></hr>
+									<!-- </div> -->
 
 									<!-- <div class="container jumbotron">
 										<h5 class="center">Want to attend this event? Register here.</h5>
@@ -454,25 +538,26 @@ if (isset($_POST['submit'])) {
 										</form>
 									</div> -->
 
-									<div class="container jumbotron" style="display: none;" id="buy">
+									<div class="container jumbotron" style="display: none; background:<?php echo $opacity; ?>; color: <?php echo $color; ?>;" id="buy">
 										<h5 class="center">Buy Tickets For This Event</h5>
 											<br>
-										<form method="post" action="event_page.php">						  
+										<form method="post" action="event_page.php?id=<?php echo $fid; ?>">	
+											<input type="hidden" name="cost" value="<?php echo $ticket_price; ?>">					  
 										  <div class="form-row">
 											    <div class="form-group col-md-6">
 											      <small for="inputEmail4">Full Name</small>
-											      <input type="email" class="form-control" id="inputEmail4" placeholder="Enter your full name" name="email">
+											      <input type="text" class="form-control" id="inputEmail4" placeholder="Enter your full name" name="full_name">
 											    </div>
 											    <div class="form-group col-md-6">
 											      <small for="inputPassword4">Quantity</small>
-											      <input type="number" class="form-control" id="inputPassword4" placeholder="" value="" min="1" name="qty">
+											      <input type="number" class="form-control" id="inputPassword4" placeholder="" value="" min="1" name="quantity">
 											    </div>
 											</div>
 											<div class="wrapper">
 												<div class="form-group">
 													<small class="form-group custom-control-inline" for="exampleFormControlTextarea1">Payment Method:</small>
 						                        <div class="custom-control custom-radio custom-control-inline form-group">
-						                            <input type="radio" id="customRadioInline1" name="mobile_money" class="custom-control-input" value="free" required checked>
+						                            <input type="radio" id="customRadioInline1" name="mobile_money" class="custom-control-input" value="mtn" required checked>
 						                            <label class="custom-control-label" for="customRadioInline1">MTN</label>
 						                        </div>
 						                        <div class="custom-control custom-radio custom-control-inline">
@@ -497,25 +582,27 @@ if (isset($_POST['submit'])) {
 											</div>
 										</form>
 									</div>
+
+
 									<hr class="hr"></hr>
 
 
-									<div class="container jumbotron">
+									<div class="container jumbotron" style="color: <?php echo $color; ?>; background: <?php echo $opacity; ?>;">
 										<h5 class="center">Want to attend this event? Register here.</h5>
 											<br>
 										<form method="post" action="">						  
 										  <div class="form-group">
-										    <small class="form-text text-muted">Full Name</small>
+										  	<small class="">Full Name</small>
 										    <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter your full name" name="fullname" required>
 										  </div>
 
 										  <div class="form-group">
-										    <small class="form-text text-muted">Email</small>
+										    <small class="">Email</small>
 										    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email address" name="email" required>
 										  </div>
 
 										  <div class="form-group">
-										    <small id="emailHelp" class="form-text text-muted">What are your expectations from the this event?</small>
+										    <small id="emailHelp" class="">What are your expectations from the this event?</small>
 										    <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="What are your expectations?" name="expectations" required></textarea>
 										  </div>
 										    <button type="submit" class="btn btn-primary" name="register">Register</button>
@@ -525,8 +612,8 @@ if (isset($_POST['submit'])) {
 
 									</div>
 									<!-- program outline -->
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-										<table class="table table-hover" style="width: 800px; text-align: left;">
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
+										<table class="table table-hover" style="width: 800px; text-align: left; background: <?php echo $opacity; ?>;">
 										  <thead>
 										    <tr>
 										      <th scope="col">Role</th>
@@ -542,14 +629,20 @@ if (isset($_POST['submit'])) {
 									</div>
 									<!-- live feed -->
 									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+										<a href="<?php echo $live_stream; ?>" target="_blank">Click here to stream live</a>
 										<div class="embed-responsive embed-responsive-16by9">
-											<iframe width="560" height="315" src="https://www.youtube.com/embed/pg-dBpRcar0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+											<!-- <iframe width="560" height="315" src="https://www.pscp.tv/realjblaq/1kvJpEZYXjMxE?t=40s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+
 										  <!-- <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe> -->
+										  <!-- <iframe width="560" height="315" class="embed-responsive-item" src="https://www.pscp.tv/realjblaq/1kvJpEZYXjMxE?t=40s" frameborder="0" allowfullscreen></iframe>
+ -->
+										  <!-- https://www.pscp.tv/realjblaq/1kvJpEZYXjMxE?t=40s -->
+
 										</div>
 									</div>
 									<!--  -->
 									<div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-about-tab">
-										<table class="table table-hover" style="width: 800px;">
+										<table class="table table-hover" style="width: 800px; background: <?php echo $opacity; ?>;">
 										  <thead style="text-align: left;">
 										    <tr>
 										      <th scope="col">File Name</th>
@@ -563,7 +656,7 @@ if (isset($_POST['submit'])) {
 										</table>
 									</div>
 									<!-- organizer-------------------------------------------------------- -->
-									<div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+									<div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab" style="background: <?php echo $opacity; ?>; padding: 50px;">
 										<div class="container">
 										  <div class="row">
 										    <div class="col-md-6 img">
@@ -573,12 +666,12 @@ if (isset($_POST['submit'])) {
 										      <blockquote>
 										        <h5><?php echo $fname.' '.$lname; ?></h5>
 										      	<span>Username: @<?php echo $username; ?></span><br>
-										        <small><cite title="Source Title"><?php echo $profession; ?>  <i class="icon-map-marker"></i></cite></small>
+										        <small><cite title="Source Title"><?php echo $profession; ?></cite></small>
 										      </blockquote>
-										      <p>
-										        <?php echo $email; ?> <br>
+										      <span>
+										        <?php echo $user_email; ?> <br>
 										        <?php echo $phone; ?>
-										      </p>
+										      </span><br><br>
 										      <span> <img src="img/facebook.png" width="20"> <br><?php echo $facebook; ?></span><br>
 										      <span> <img src="img/twitter.png" width="20"> <br><?php echo $twitter; ?></span><br>
 										      <span> <img src="img/instagram.png" width="20"> <br><?php echo $instagram; ?></span><br>

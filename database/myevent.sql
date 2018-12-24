@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 17, 2018 at 10:07 PM
+-- Generation Time: Dec 24, 2018 at 02:06 PM
 -- Server version: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -25,6 +25,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `announcement`
+--
+
+DROP TABLE IF EXISTS `announcement`;
+CREATE TABLE IF NOT EXISTS `announcement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eid` int(11) NOT NULL,
+  `announcement` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `eid` (`eid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `evaluation`
 --
 
@@ -39,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
   `evaluation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `eid` (`eid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `evaluation`
@@ -49,7 +64,9 @@ INSERT INTO `evaluation` (`id`, `eid`, `name`, `email`, `rating`, `comment`, `ev
 (1, 48, 'justice', 'info@justice.com', 'poor', '', '2018-12-17 19:06:22'),
 (2, 48, 'Makafui', 'info@makafui.com', 'excellent', 'I like it ', '2018-12-17 19:20:16'),
 (3, 58, 'Justice', 'info@justice.com', 'excellent', 'I was a really interesting experience, I would like to attend this again next year.', '2018-12-17 19:50:45'),
-(4, 58, 'Joyce Blessing', 'info@joy.com', 'fair', 'I was ok but not what I expected.', '2018-12-17 19:51:16');
+(4, 58, 'Joyce Blessing', 'info@joy.com', 'fair', 'I was ok but not what I expected.', '2018-12-17 19:51:16'),
+(5, 36, 'justice', 'infor@k.com', 'excellent', 'my comments', '2018-12-19 13:04:01'),
+(6, 37, 'Justice', 'info@justice.com', 'fair', 'What a tragedy it was.', '2018-12-24 12:05:30');
 
 -- --------------------------------------------------------
 
@@ -72,29 +89,36 @@ CREATE TABLE IF NOT EXISTS `events` (
   `ticket_price` decimal(10,2) DEFAULT '0.00',
   `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `evaluate` enum('0','1') NOT NULL DEFAULT '0',
+  `announcement` enum('0','1') NOT NULL,
+  `the_announcement` text,
+  `live_stream` text,
+  `template` varchar(200) DEFAULT 'default',
   PRIMARY KEY (`eid`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`eid`, `uid`, `ename`, `etype`, `about`, `image`, `video`, `location`, `edate`, `ticket_qty`, `ticket_price`, `date_created`, `evaluate`) VALUES
-(34, 72, 'Night Party', 'free', 'Come lets party all night!', 'fdaf9232da837d070ca72aa2e9dba1cb.jpg', '63cf0442b43a4a968c1074892b8fffde.mp4', 'Staples Center', '2018-12-05 12:00:00', 0, '0.00', '2018-11-24 11:33:15', '0'),
-(35, 73, 'Sov food challenge', 'free', 'Who can eat more? Come, be there and see for yourself.', '2c468e7c21d09c7c36888190c69b8bf2.jpg', 'd818b3b2167455019d4417457db8be3d.mp4', 'SOV Hostel', '2018-11-06 06:30:00', 0, '0.00', '2018-11-06 23:37:11', '0'),
-(36, 73, 'Wedding Invitation', 'paid', 'Migel and Rose Joins.', 'f57748772d9af8dae97696b8d91c87d1.jpg', '62f7c5aeecb767c753753494d587ff4a.mp4', 'Top Hill Church', '2018-12-29 08:00:00', 7, '30.00', '2018-12-17 21:52:30', '0'),
-(37, 73, 'funeral announcement ', 'free', 'Burial service of Franklina Maame Yaa Tebua Nkansah', '9610eefaca8ef4fd463daf0fee15f745.jpg', 'f0ed092a42892a5f04c1f01067d23ab1.mp4', 'Prince of Peace Catholic Church', '2019-03-03 08:00:00', 0, '0.00', '2018-11-06 23:44:19', '0'),
-(38, 68, 'proposal defense', 'paid', 'Level 400 students defend their final year projects.', 'e7940cbb75061f766101fbae87a80e4e.jpg', 'ba595718b5aa3376364fcfe9cc1323ab.mp4', 'Lab 1,  CS dept., VVU', '2018-11-23 08:30:00', 30, '10.00', '2018-12-15 20:22:53', '0'),
-(39, 68, 'opening Ceremony', 'free', 'the grand opening of Shiloh Baptist Church', 'b488d8043c152a3a418c59098fde75c5.png', '9cc7b8818c2133c5693128485c93fda3.mp4', 'Shiloh Baptist Church', '2019-01-06 09:30:00', 0, '0.00', '2018-11-06 23:56:03', '0'),
-(42, 72, 'Be Counted', 'free', 'One Note in collaboration with Sentinels presents, Be Counted.\r\nPerforming live. Vocal Path.', '39231a2bcea238d906e7c6186b36f395.jpeg', 'f86ab8bc9fe8247fabb7f90d7f215ee7.', 'Berean Worship Centre, VVU', '2018-11-30 19:00:00', 0, '0.00', '2018-11-23 17:56:19', '0'),
-(48, 72, 'Tig This is Gospel', 'free', 'Radio Premiere of Vocal Path Ft. Julia Love at Home. ', 'ccb2eb1ac36fbe7056a4ec2427a67ef3.jpeg', '604ccc2a80ef78a402fbcf54c9578bfe.mp4', 'Hitz 109.3 FM', '2018-12-16 09:00:00', 0, '0.00', '2018-12-17 21:52:30', '0'),
-(53, 72, 'Salvation Sunday', 'free', 'Seek the Lord while you can find (Isaiah 55:6)', 'e028be71e6c13e765c6017c0d21ddf19.jpeg', '7aef8f9548c8644185bed9f45fe7b29c.', 'First Love Centre, Behind Allied Oil, Trinity College, UPSA Road, Legon', '2018-12-23 10:30:00', 0, '0.00', '2018-12-14 15:24:53', '0'),
-(54, 72, 'Holy Night', 'free', 'Power edition with PD BOTCHEY, ALEXANDRAH, E-ROCK, and KWABENA. Also ministring: DAVE DA MUSICBOX, CONSICREATED INC., GRACIOUS LADIES.', '214b2edca0d40f6fda291b9bea3d7d17.jpeg', '50a758f7d2032a7b395b1848255bbb6b.', 'ICGC Yaweh Temple', '2018-12-27 14:00:00', 0, '0.00', '2018-12-14 15:51:37', '0'),
-(55, 72, 'Naughty School Boy Issue #1', 'paid', 'ROMANUS INCOMPLETE. Come and laugh like never before.', 'c0e7f2df2c022c73ca78ea8008f15c70.jpeg', '00b57beea24956e8daa55f34f1b0f5bf.', 'National Theatre', '2018-12-23 19:00:00', 100, '100.00', '2018-12-14 21:16:29', '0'),
-(56, 74, 'Scott cunninghum', 'free', 'From the Baseline 40 years Beneath the Rim. Hawks.com/scott', '7ddfc9c1b6d9bbabee689b6f426bb0d6.jpg', '9bfb224023e24d9976ca1a89635c22cf.', 'Westside Cultural Side Center', '2019-08-03 07:00:00', 0, '0.00', '2018-12-17 09:30:47', '0'),
-(57, 74, 'Shadrach & Theodocia', 'free', 'A fresh new day, and its ours. A day of happy beginnings when we, Shadrach & Theodocia pledge our love as one. Together with our parents, we invite you to celebrate the joy of our marriage ceremony. RSVP [Dante: 0245352340] [Angela: 0244156796] [Nelson: 0244268341] [Francis: 0241697133]', '91aba368e1fd1995167262e7fd8e138c.jpeg', 'f231e298f19270e6499205478847db02.', 'Adenta, Followed by reception at Timora Gardens.', '2019-01-19 07:30:00', 0, '0.00', '2018-12-17 10:49:54', '0'),
-(58, 73, 'Red Cupz 3.0', 'paid', 'The official end of year party RED CUPZ 3.0. Doors open at 9AM and free for ladies before 1AM. [King Yaw: 0506415226] [Kross: 0552565356] [Rhymes: 0209345519] [Crack: 0278520986]. For VIP Reservations CALL KING YAW.', '8c737d462f36b5df69ca6b18bf30b557.jpeg', 'a47d4d028e02a277404f13a0371c8977.', 'Vanity Night Club', '2018-12-28 21:00:00', 6, '25.00', '2018-12-17 21:52:30', '0');
+INSERT INTO `events` (`eid`, `uid`, `ename`, `etype`, `about`, `image`, `video`, `location`, `edate`, `ticket_qty`, `ticket_price`, `date_created`, `evaluate`, `announcement`, `the_announcement`, `live_stream`, `template`) VALUES
+(34, 73, 'Night Party', 'free', 'Come lets party all night!', 'fdaf9232da837d070ca72aa2e9dba1cb.jpg', '63cf0442b43a4a968c1074892b8fffde.mp4', 'Staples Center', '2018-12-05 12:00:00', 0, '0.00', '2018-12-24 12:57:27', '0', '0', '', NULL, ''),
+(35, 73, 'Sov food challenge', 'free', 'Who can eat more? Come, be there and see for yourself.', '2c468e7c21d09c7c36888190c69b8bf2.jpg', 'd818b3b2167455019d4417457db8be3d.mp4', 'SOV Hostel', '2018-11-06 06:30:00', 0, '0.00', '2018-11-06 23:37:11', '0', '0', '', NULL, ''),
+(36, 73, 'Wedding Invitation', 'paid', 'Migel and Rose Joins.', 'f57748772d9af8dae97696b8d91c87d1.jpg', '62f7c5aeecb767c753753494d587ff4a.mp4', 'Top Hill Church', '2018-12-29 08:00:00', 7, '30.00', '2018-12-24 11:25:02', '0', '0', 'Car No. A1 50019. Please, you are wanted outside. Thank you.', 'https://www.pscp.tv/w/1ypJdOnzEYNGW', 'wedding'),
+(37, 73, 'funeral announcement ', 'paid', 'Burial service of Franklina Maame Yaa Tebua Nkansah', '9610eefaca8ef4fd463daf0fee15f745.jpg', 'f0ed092a42892a5f04c1f01067d23ab1.mp4', 'Prince of Peace Catholic Church', '2019-03-03 08:00:00', 3, '2.00', '2018-12-24 12:31:09', '0', '0', 'Burial of the deceased will be in an hours time.', NULL, 'funeral'),
+(38, 68, 'proposal defense', 'paid', 'Level 400 students defend their final year projects.', 'e7940cbb75061f766101fbae87a80e4e.jpg', 'ba595718b5aa3376364fcfe9cc1323ab.mp4', 'Lab 1,  CS dept., VVU', '2018-11-23 08:30:00', 30, '10.00', '2018-12-15 20:22:53', '0', '0', '', NULL, ''),
+(39, 68, 'opening Ceremony', 'free', 'the grand opening of Shiloh Baptist Church', 'b488d8043c152a3a418c59098fde75c5.png', '9cc7b8818c2133c5693128485c93fda3.mp4', 'Shiloh Baptist Church', '2019-01-06 09:30:00', 0, '0.00', '2018-11-06 23:56:03', '0', '0', '', NULL, ''),
+(42, 73, 'Be Counted', 'free', 'One Note in collaboration with Sentinels presents, Be Counted.\r\nPerforming live. Vocal Path.', '39231a2bcea238d906e7c6186b36f395.jpeg', 'f86ab8bc9fe8247fabb7f90d7f215ee7.', 'Berean Worship Centre, VVU', '2018-11-30 19:00:00', 0, '0.00', '2018-12-24 12:58:00', '0', '0', '', NULL, ''),
+(48, 73, 'Tig This is Gospel', 'free', 'Radio Premiere of Vocal Path Ft. Julia Love at Home. ', 'ccb2eb1ac36fbe7056a4ec2427a67ef3.jpeg', '604ccc2a80ef78a402fbcf54c9578bfe.mp4', 'Hitz 109.3 FM', '2018-12-16 09:00:00', 0, '0.00', '2018-12-24 12:58:15', '0', '0', '', NULL, ''),
+(53, 73, 'Salvation Sunday', 'free', 'Seek the Lord while you can find (Isaiah 55:6)', 'e028be71e6c13e765c6017c0d21ddf19.jpeg', '7aef8f9548c8644185bed9f45fe7b29c.', 'First Love Centre, Behind Allied Oil, Trinity College, UPSA Road, Legon', '2018-12-23 10:30:00', 0, '0.00', '2018-12-24 13:04:03', '0', '0', '', NULL, 'church'),
+(54, 73, 'Holy Night', 'free', 'Power edition with PD BOTCHEY, ALEXANDRAH, E-ROCK, and KWABENA. Also ministring: DAVE DA MUSICBOX, CONSICREATED INC., GRACIOUS LADIES.', '214b2edca0d40f6fda291b9bea3d7d17.jpeg', '50a758f7d2032a7b395b1848255bbb6b.', 'ICGC Yaweh Temple', '2018-12-27 14:00:00', 0, '0.00', '2018-12-24 13:00:07', '0', '0', '', NULL, ''),
+(55, 73, 'Naughty School Boy Issue #1', 'paid', 'ROMANUS INCOMPLETE. Come and laugh like never before.', 'c0e7f2df2c022c73ca78ea8008f15c70.jpeg', '00b57beea24956e8daa55f34f1b0f5bf.', 'National Theatre', '2018-12-31 12:00:00', 100, '100.00', '2018-12-24 14:01:31', '0', '0', '', NULL, 'concert'),
+(56, 74, 'Scott cunninghum', 'free', 'From the Baseline 40 years Beneath the Rim. Hawks.com/scott', '7ddfc9c1b6d9bbabee689b6f426bb0d6.jpg', '9bfb224023e24d9976ca1a89635c22cf.', 'Westside Cultural Side Center', '2019-08-03 07:00:00', 0, '0.00', '2018-12-17 09:30:47', '0', '0', '', NULL, ''),
+(57, 74, 'Shadrach & Theodocia', 'free', 'A fresh new day, and its ours. A day of happy beginnings when we, Shadrach & Theodocia pledge our love as one. Together with our parents, we invite you to celebrate the joy of our marriage ceremony. RSVP [Dante: 0245352340] [Angela: 0244156796] [Nelson: 0244268341] [Francis: 0241697133]', '91aba368e1fd1995167262e7fd8e138c.jpeg', 'f231e298f19270e6499205478847db02.', 'Adenta, Followed by reception at Timora Gardens.', '2019-01-19 07:30:00', 0, '0.00', '2018-12-24 13:13:15', '0', '0', '', NULL, 'wedding'),
+(58, 73, 'Red Cupz 3.0', 'paid', 'The official end of year party RED CUPZ 3.0. Doors open at 9AM and free for ladies before 1AM. [King Yaw: 0506415226] [Kross: 0552565356] [Rhymes: 0209345519] [Crack: 0278520986]. For VIP Reservations CALL KING YAW.', '8c737d462f36b5df69ca6b18bf30b557.jpeg', 'a47d4d028e02a277404f13a0371c8977.', 'Vanity Night Club', '2018-12-28 21:00:00', 6, '25.00', '2018-12-24 12:38:46', '0', '0', '', '', 'party'),
+(59, 73, 'Birthday Bash', 'free', 'Stock PSD.NET presents a new party. All are invited. It is gon be lit.', 'a563b3d24f4ff5f39bea39f9b5408b2f.jpg', '', 'Stock Club, Osu, Accra.', '2019-01-19 20:00:00', 0, '0.00', '2018-12-24 13:28:09', '0', '0', NULL, NULL, 'birthday'),
+(60, 73, 'Conference for Designers', 'free', 'Push creativity beyond limitation to make an industry of great designers. ', '77126370e010f765f99f328b5bedeee4.jpg', '', '121 King Street, Melbourne Victoria 3000 Australia', '2019-06-06 08:00:00', 0, '0.00', '2018-12-24 13:40:15', '0', '0', NULL, NULL, 'conference'),
+(61, 73, 'Town Hall Meeting', 'free', 'Take a stand against drug abuse and violence. Start the conversation; join a community town hall on substance use/misuse and violence.', 'e96ad85bd66115ce1e0d4b4535c26599.jpg', '', 'Hinds Behavioral Health Services', '2019-10-20 09:00:00', 0, '0.00', '2018-12-24 13:56:02', '0', '0', NULL, NULL, 'meeting');
 
 -- --------------------------------------------------------
 
@@ -109,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `file_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `eid` (`eid`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `files`
@@ -121,7 +145,8 @@ INSERT INTO `files` (`id`, `eid`, `file_name`) VALUES
 (19, 42, 'New-Wesite-webgrids.com-.png'),
 (20, 53, '2018-2019-sam.pdf'),
 (21, 48, '2018-2019-sam.pdf'),
-(22, 58, '2018-2019-sam (1).pdf');
+(22, 58, '2018-2019-sam (1).pdf'),
+(23, 36, '5afa078bfaf73f4ff0fa0a961b996324_resize (1).jpg');
 
 -- --------------------------------------------------------
 
@@ -137,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `program_outline` (
   `name` varchar(200) NOT NULL,
   `program_time` time NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `program_outline`
@@ -158,7 +183,8 @@ INSERT INTO `program_outline` (`pid`, `eid`, `role`, `name`, `program_time`) VAL
 (13, 42, 'MC', 'Justice Markwei', '00:00:00'),
 (32, 48, 'Ministration', 'Julia', '00:00:00'),
 (33, 36, 'Photoshoot', 'Bride\'s family', '09:00:00'),
-(34, 58, 'mc', 'john', '00:00:00');
+(34, 58, 'mc', 'john', '00:00:00'),
+(35, 36, 'Mc ', 'jusice', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -287,6 +313,12 @@ INSERT INTO `users` (`uid`, `fname`, `lname`, `email`, `username`, `password`, `
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `announcement`
+--
+ALTER TABLE `announcement`
+  ADD CONSTRAINT `announcement_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `events` (`eid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `evaluation`

@@ -14,10 +14,10 @@ include('../authentication/session.php');
             $free_paid = $_POST['free_paid'];
             $ticket_price = $_POST['ticket_price'];
             $ticket_quantity = $_POST['ticket_quantity'];
-            // echo $event_name; exit();
+            // echo $event_date; exit();
             //-----------------------------------------------------------------------------
 
-            //for poster
+            //for poster-----------------------------------------------------------------
             $targetfolderp = "../media/images/";
 
             $picturename = basename($_FILES['picture_upload']['name']);
@@ -32,12 +32,20 @@ include('../authentication/session.php');
             $file_type=$_FILES['picture_upload']['type'];
             if ($file_type=="image/png" || $file_type=="image/gif" || $file_type=="image/jpeg"){
                 move_uploaded_file($_FILES['picture_upload']['tmp_name'], $targetfolderp);
-                                     
+            // echo $picturename; exit();
+                      
             }else {
+                $picturename='';
+                echo '<script type="text/javascript">
+                        var vid = document.getElementById("pic");
+                        vid.setCustomValidity("You may only JPEGs or GIF files!");
+                     </script>';
+                // $event_post_message = "<script type='text/javascript'>swal('Error!', 'You may only JPEGs or GIF files!', 'error')</script>";        
+
              echo "You may only JPEGs or GIF files.<br>";
             }      
 
-            //for video advert
+            //for video advert------------------------------------------------------------------
             $targetfolderv = "../media/videos/";
 
             $videoname = basename($_FILES['video_upload']['name']);
@@ -51,8 +59,17 @@ include('../authentication/session.php');
             $file_type2=$_FILES['video_upload']['type'];
             if ($file_type2=="video/mp4"){
                 move_uploaded_file($_FILES['video_upload']['tmp_name'], $targetfolderv);
+            // echo $videoname; exit();
+
             }else {
-             echo "You may only upload videos";
+                $videoname='';
+                echo '<script type="text/javascript">
+                        var vid = document.getElementById("vid");
+                        vid.setCustomValidity("You may only upload mp4 videos!");
+                     </script>';
+                // $event_post_message = "<script type='text/javascript'>swal('Error!', 'You may only upload mp4 videos!', 'error')</script>";        
+
+             echo "You may only upload mp4 videos";
             }  
             
             //-----------------------------------------------------------------------------
@@ -60,7 +77,7 @@ include('../authentication/session.php');
             //$session_id
             $sql = "INSERT INTO events (uid, ename, etype, about, image, video, location, edate, ticket_qty, ticket_price)
             VALUES ('".$session_id."','".$event_name."','".$free_paid."','".$event_description."','".$picturename."','".$videoname."','".$event_venue."','".$event_date."','".$ticket_quantity."','".$ticket_price."')";
-
+            // echo $sql; exit();
             $result = mysqli_query($conn,$sql);
            
             if ($result) {
@@ -80,7 +97,7 @@ include('../authentication/session.php');
     // else{
     //         $event_post_message = '<p style="color: red; margin-bottom: 5px;">Failed. Passwords do not match!</p>';         
     //     }
-
+// exit();
 ?>
 <!DOCTYPE html>
 <html>
@@ -271,12 +288,12 @@ include('../authentication/session.php');
 
                     <div class="form-group">
                         <label>Select Event Poster <small>(This helps promote your event better).</small></label>
-                        <input name="picture_upload" type="file" class="form-control">
+                        <input id="pic" name="picture_upload" type="file" class="form-control">
                      </div>
 
                      <div class="form-group">
                         <label>Select Video Advert <small>(This helps promote your event better).</small></label>
-                        <input name="video_upload" type="file" class="form-control">
+                        <input id="vid" name="video_upload" type="file" class="form-control">
                      </div>
 
                     <button name="publish_event" type="submit" class="btn btn-primary">Publish Event</button>
